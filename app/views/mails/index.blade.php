@@ -1,0 +1,1 @@
+/var/www/html/gxsystem/app/views/mails/index.blade.php

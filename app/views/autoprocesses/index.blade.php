@@ -1,0 +1,1 @@
+C:\xampp\htdocs\xaracbs\app/views/autoprocesses/index.blade.php
