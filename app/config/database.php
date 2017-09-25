@@ -55,9 +55,9 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'gasexpressdb',
+			'database'  => 'gas2',
 			'username'  => 'root',
-			'password'  => '',
+			'password'  => 'mysql',
 			'port' => '3306',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',

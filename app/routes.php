@@ -2966,7 +2966,7 @@ Route::get('erporders/show/{id}', function($id){
                 ->join('items', 'erporderitems.item_id', '=', 'items.id')
                 ->join('clients', 'erporders.client_id', '=', 'clients.id')
                 ->where('erporders.id','=',$id)
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id',
                   'discount_amount','erporders.order_number as order_number','price','description')
                 ->first();
