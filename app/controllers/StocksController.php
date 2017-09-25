@@ -59,7 +59,13 @@ class StocksController extends \BaseController {
 
 		Stock::addStock($item, $location, $quantity, $date);
 
+		if (! Entrust::can('confirm_stock') ) // Checks the current user
+        {
+        return Redirect::to('stocks')->with('notice', 'Stock has been successfully updated! Please wait for admin confirmation....');
+        }else{
+
 		return Redirect::route('stocks.index')->withFlashMessage('stock has been successfully updated!');
+	}
 	}
 
 	/**

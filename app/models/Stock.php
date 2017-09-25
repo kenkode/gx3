@@ -22,8 +22,8 @@ class Stock extends \Eloquent {
 
 	public static function getStockAmount($item){
 
-		$qin = DB::table('stocks')->where('item_id', '=', $item->id)->sum('quantity_in');
-		$qout = DB::table('stocks')->where('item_id', '=', $item->id)->sum('quantity_out');
+		$qin = DB::table('stocks')->where('item_id', '=', $item->id)->where('is_confirmed', '=', 1)->sum('quantity_in');
+		$qout = DB::table('stocks')->where('item_id', '=', $item->id)->where('is_confirmed', '=', 1)->sum('quantity_out');
 
 		$stock = $qin - $qout;
 
@@ -66,14 +66,42 @@ class Stock extends \Eloquent {
 
 	public static function addStock($item, $location, $quantity, $date){
 
+        if (! Entrust::can('confirm_stock') ) // Checks the current user
+        {
 		$stock = new Stock;
 
 		$stock->date = $date;
 		$stock->item()->associate($item);
 		$stock->location()->associate($location);
 		$stock->quantity_in = $quantity;
+		$stock->receiver_id = Confide::user()->id;
+		$stock->is_confirmed = 0;
 		$stock->save();
 
+		$name = $item->item_make;
+        $loc = $location->name;
+        $id = $stock->id;
+		$username = Confide::user()->username;
+
+		$send_mail = Mail::send('emails.stock', array('name' => 'Victor Kotonya', 'username' => $username,'itemname' => $name,'location' => $loc,'quantity' => $quantity,'id' => $id), function($message)
+        {   
+		    $message->from('info@lixnet.net', 'Gas Express');
+		    $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Stock Confirmation!');
+
+    
+        });
+        }else{
+        $stock = new Stock;
+
+		$stock->date = $date;
+		$stock->item()->associate($item);
+		$stock->location()->associate($location);
+		$stock->quantity_in = $quantity;
+		$stock->confirmed_id = Confide::user()->id;
+		$stock->receiver_id = Confide::user()->id;
+		$stock->is_confirmed = 1;
+		$stock->save();
+        }
 
 
 	}

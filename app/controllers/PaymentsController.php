@@ -68,11 +68,9 @@ class PaymentsController extends \BaseController {
 		$payment = new Payment;
 
 		$client = Client::findOrFail(Input::get('order'));
-
 		$payment->client_id = Input::get('order');
 		$payment->erporder_id = Input::get('order');
-		$payment->amount_paid = Input::get('amount');
-			
+		$payment->amount_paid = Input::get('amount');	
 		$payment->paymentmethod_id = Input::get('paymentmethod');
 		$payment->account_id = Input::get('account');
 		$payment->received_by = Input::get('received_by');

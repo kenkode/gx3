@@ -60,9 +60,14 @@
           <td>{{ $order->client->name }}</td>
           <td>{{$order->order_number }}</td>
           <td>{{$order->date }}</td>
-          <td>{{$order->status }}</td>
-           
-        
+          
+          @if($order->status === "delivered")
+          <td><span class="label label-success">Delivered</td>
+          @elseif($order->status === "new")
+          <td><span class="label label-default">New</td>
+          @else
+          <td><span class="label label-danger">Cancelled</td> 
+          @endif
           <td>
 
                   <div class="btn-group">

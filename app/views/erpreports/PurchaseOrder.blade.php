@@ -183,7 +183,7 @@ img#watermark{
 
             ?>
           <tr>
-            <td >{{ $orderitem->item->name}}</td>
+            <td >{{ $orderitem->item->item_make}}</td>
             <td>{{ $orderitem->item->description}}</td>
             
             <td>{{ $orderitem->quantity}}</td>
@@ -230,20 +230,23 @@ $payments = Erporder::getTotalPayments($erporder);
 
       
       </table>
-
-
-
-    
+ 
   </div>
 <br>
 <i><b>Order LPO</b></i><br>
 <br>
-1. Prepared by .............................................Signature: ............................. Date: ......................
-<br>
-2. Reviewed by ...........................................Signature: ............................. Date: ......................
-<br>
-3. Authorized by .........................................Signature: ............................. Date: ......................
-
+<table border="0">
+<tr>
+<td>
+1. Prepared by <u>{{Erporder::getUser($erporder->prepared_by)}}</u> </td> <td>Signature: .............................</td><td> Date: <u>{{date('Y-m-d')}}</u></td>
+</tr>
+<tr>
+<td>
+2. Reviewed by <u>{{Erporder::getUser($erporder->reviewed_by)}}</u></td><td> Signature: ............................. </td><td>Date: <u>{{date('Y-m-d')}}</u></td></tr>
+<tr>
+<td>
+3. Authorized by <u>{{Erporder::getUser($erporder->authorized_by)}}</u></td><td> Signature: .............................</td><td> Date: <u>{{date('Y-m-d')}}</u></td></tr>
+</table>
 
 </div>
 </div>

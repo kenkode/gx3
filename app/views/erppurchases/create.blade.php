@@ -41,6 +41,16 @@
                         </div>
           </div>
 
+          <div class="form-group">
+            <label for="username">Available Purchase Order <span style="color:red">*</span> :</label>
+            <select name="client" class="form-control" required>
+                @foreach($erporders as $erporder)
+                @if($erporder->status == 'new')
+                    <option value="{{$erporder->id}}">{{$erporder->name}}</option>
+                    @endif
+                @endforeach
+            </select>
+        </div>
 
           <div class="form-group">
             <label for="username">Supplier <span style="color:red">*</span> :</label>

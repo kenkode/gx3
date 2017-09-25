@@ -59,7 +59,7 @@ $(document).ready(function() {
             <option>       ......................... select item........................</option>
                 @foreach($items as $item)
                 
-                    <option value="{{$item->id}}"<?=($price->Item_id==$item->id)?'selected="selected"':''; ?>>{{$item->name}}</option>
+                    <option value="{{$item->id}}"<?=($price->Item_id==$item->id)?'selected="selected"':''; ?>>{{$item->item_make}}</option>
                     
                 @endforeach
             </select>
@@ -68,7 +68,7 @@ $(document).ready(function() {
         
         <div class="form-group">
             <label for="username">Selling Price:</label>
-            <input class="form-control" placeholder="" type="text" name="selling_price" id="selling_price" value="" readonly>
+            <input class="form-control" placeholder="" type="text" name="selling_price" id="selling_price" value="{{$price::sprice($price->Item_id)}}" readonly>
         </div>
 
         <div class="form-group">

@@ -37,6 +37,11 @@ class Price extends \Eloquent {
     return $this->belongsTo('Item');
   }
 
+  public static function sprice($id){
+    $item = Item::findOrFail($id);
+    $price = $item->selling_price;
 
+		return $price;
+    }
 
 }

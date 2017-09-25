@@ -1,83 +1,64 @@
 <?php
-
-
-function asMoney($value) {
-  return number_format($value, 2);
-}
-
+  function asMoney($value){
+    return number_format($value, 2);
+  }
 ?>
+
 @extends('layouts.erp')
 @section('content')
 
-
 <div class="row">
-	<div class="col-lg-12">
-  <h4>Payments</h4>
-
-<hr>
-</div>	
+  <div class="col-lg-12">
+    <h4><font color="green">Payments</font></h4>
+    <hr>
+  </div>
 </div>
 
+<div class="row"> 
+  <!-- QUICK LINK BUTTONS -->
+  <div class="col-lg-12">
+    <a href="{{ URL::to('payments/create') }}" class="btn btn-info btn-sm"><i class="fa fa-plus fa-fw"></i> New Payment</a>&emsp;
+    <!-- <a href="" class="btn btn-warning btn-sm"> Run Depreciation</a>&emsp; -->
+    <a href="{{ URL::to('daily_payments/today') }}" class="btn btn-info btn-sm"> Daily Payment</a>&emsp;
+    <hr>
+  </div><!-- ./END -->
 
-<div class="row">
-	<div class="col-lg-12">
-   
-    @if (Session::has('flash_message'))
+  <!-- FIXED ASSETS BODY SECTION -->
+  <div class="col-lg-12">
+    <!-- TAB LINKS -->
 
-      <div class="alert alert-success">
-      {{ Session::get('flash_message') }}
-     </div>
-    @endif
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#registeredAssets">Receivable </a></li>
+      <li><a data-toggle="tab" href="#soldDisposedAssets">Payable </a></li>
+    </ul>
 
-    @if (Session::has('delete_message'))
+    <!-- TAB CONTENT -->
+    <div class="tab-content">
+      <!-- REGISTERED ASSETS -->
+      <div id="registeredAssets" class="tab-pane fade in active">
+        <table class="table table-condensed table-bordered table-responsive table-hover users">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Clent</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $i = 1; ?>
+            @foreach($payments as $payment)
+            @if($payment->client->type == 'Customer')
 
-      <div class="alert alert-danger">
-      {{ Session::get('delete_message') }}
-     </div>
-    @endif
-    
-    <div class="panel panel-default">
-      <div class="panel-heading">
-          <a class="btn btn-info btn-sm" href="{{ URL::to('payments/create')}}">new payment</a>&emsp;
-          <a class="btn btn-primary btn-sm" href="{{ URL::to('daily_payments/today') }}">Daily Payments</a>
-      </div>
-      <div class="panel-body">
-
-
-    <table id="users" class="table table-condensed table-bordered table-responsive table-hover">
-
-
-      <thead>
-
-        <th>#</th>
-        <th>Client</th>
-        <th>Amount</th>
-        <!-- <th>Balance</th> -->
-        <th>Date</th>
-        <th></th>
-
-      </thead>
-      <tbody>
-
-        <?php $i = 1; ?>
-        @foreach($payments as $payment)
-
-        <tr>
-
-          <td> {{ $i }}</td>
-          
-       
-          <td>{{ $payment->client->name }}</td>
-           
-          <td align="right">{{ asMoney($payment->amount_paid) }}</td>
-          <!-- <td></td> -->
-          <td>{{ date("d-M-Y",strtotime($payment->payment_date)) }}</td>
-          <td>
-
-
-            
-
-                  <div class="btn-group">
+            <tr>
+              <td>{{ $i }}</td>
+              <td>{{ $payment->client->name }}</td>
+              <td align="right">{{ asMoney($payment->amount_paid) }}</td>
+              <td>{{ date("d-M-Y",strtotime($payment->date)) }}</td>
+              
+              <td>
+                <div class="btn-group">
                   <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     Action <span class="caret"></span>
                   </button>
@@ -89,25 +70,67 @@ function asMoney($value) {
                     
                   </ul>
               </div>
+              </td>
+            </tr>
 
-                    </td>
-
-
-
-        </tr>
-
-        <?php $i++; ?>
+       <?php $i++; ?>
+        @endif
         @endforeach
 
+          </tbody>
+        </table>
+      </div><!-- ./End of registered assets -->
+      
+      <!-- SOLD/DISPOSED ASSETS -->
+      <div id="soldDisposedAssets" class="tab-pane fade in">
+        <!-- SOLD/DISPOSED ASSETS -->
+        <table class="table table-condensed table-bordered table-responsive table-hover users">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Clent</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
 
-      </tbody>
+            <?php $i = 1; ?>
+            @foreach($payments as $payment)
+            @if($payment->client->type == 'Supplier')
 
+            <tr>
+              <td>{{ $i }}</td>
+              <td>{{ $payment->client->name }}</td>
+              <td>{{ asMoney($payment->amount_paid) }}</td>
+              <td>{{ date("d-M-Y",strtotime($payment->date)) }}</td>
+              <td>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Action <span class="caret"></span>
+                  </button>
+          
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="{{URL::to('payments/edit/'.$payment->id)}}">Update</a></li>
+                   
+                    <li><a href="{{URL::to('payments/delete/'.$payment->id)}}"  onclick="return (confirm('Are you sure you want to delete this payment?'))">Delete</a></li>
+                    
+                  </ul>
+              </div>
+              </td>
+            </tr>
 
-    </table>
-  </div>
+            <?php $i++; ?>
+        @endif
+        @endforeach
 
+          </tbody>
+        </table>
+      </div><!-- ./End of disposed assets -->
+    </div><!-- ./End of tab cotent -->
 
-  </div>
+  </div><!-- ./End of body section -->
 
 </div>
 

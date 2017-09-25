@@ -95,13 +95,55 @@ class PricesController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
+		if (! Entrust::can('update_items') ) // Checks the current user
+        {
+
+		$client_id = Input::get('client');		
+		$item_id = Input::get('item');
+		$discount = Input::get('discount');
+
+		$client = Client::find($client_id);
+		$item = Item::find($item_id);
+		$username = Confide::user()->username;
+
+		$send_mail = Mail::send('emails.pricing', array('name' => 'Victor Kotonya', 'username' => $username,'client' => $client,'item' => $item,'discount' => $discount,'receiver'=>Confide::user()->id,'id' => $id), function($message)
+        {   
+		    $message->from('info@lixnet.net', 'Gas Express');
+		    $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Pricing Update!');
+
+    
+        });
+        return Redirect::to('prices')->with('notice', 'Admin approval is needed for this update');
+        }else{
+
 		$price->date = date('Y-m-d');
 		$price->client_id = Input::get('client');		
 		$price->item_id = Input::get('item');
-		$price->Discount = Input::get('discount');		
+		$price->Discount = Input::get('discount');
+		$price->confirmed_id = Confide::user()->id;
+        $Price->receiver_id = Confide::user()->id;	
 		$price->update();
 
 		return Redirect::route('prices.index')->withFlashMessage('Client Discount successfully updated!');
+	}
+	}
+
+    public function approveprice($client,$item,$discount,$receiver,$id)
+	{
+		$price = Price::findOrFail($id);
+
+		$price->date = date('Y-m-d');
+		$price->client_id = $client;		
+		$price->item_id = $item;
+		$price->Discount = $discount;		
+        $price->confirmed_id = 2;
+        $price->receiver_id = $receiver;
+		$price->update();
+
+		$i = Item::find($item);
+
+		return "<strong><span style='color:green'>Price update for ".$i->item_make." successfully approved!</span></strong>";
+	
 	}
 
 	/**

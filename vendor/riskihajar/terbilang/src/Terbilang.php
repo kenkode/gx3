@@ -17,6 +17,20 @@ class Terbilang{
 
     protected $lang;
 
+    protected $shortDividers = [
+        'kilo' => 1000,
+        'million' => 1000000,
+        'billion' => 1000000000,
+        'trillion' => 1000000000000
+    ];
+
+    protected $shortDividerAliases = [
+        'k' => 'kilo',
+        'm' => 'million',
+        'b' => 'billion',
+        't' => 'trillion',
+    ];
+
     public function __construct()
     {
         $this->hyphen      = Lang::get('terbilang::terbilang.hyphen');
@@ -28,6 +42,7 @@ class Terbilang{
         $this->prefix      = Lang::get('terbilang::terbilang.prefix');
         $this->suffix      = Lang::get('terbilang::terbilang.suffix');
         $this->prenum      = Lang::get('terbilang::terbilang.prenum');
+        $this->short       = Lang::get('terbilang::terbilang.short');
 
         $this->lang = Config::get('app.locale');
     }
@@ -40,6 +55,9 @@ class Terbilang{
         if (!is_numeric($number)) {
             return false;
         }
+
+        // parse quoted value
+        $number = doubleval($number);
 
         if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
             // overflow
@@ -114,6 +132,30 @@ class Terbilang{
         return $prefix . $string . $suffix;
     }
 
+    public function short($number, $format=null)
+    {
+        if(is_null($format)){
+            $format = config('terbilang.short', 'million', 'm');
+        }
+
+        /* If Divider Using Alias or short hand */
+        if( strlen($format) === 1 && array_key_exists($format, $this->shortDividerAliases)){
+            $format = $this->shortDividerAliases[$format];
+        }else{
+            $format = 'million';
+        }
+
+        /* Get Divider */
+        $divider = $this->shortDividers[$format];
+        /* Suffix */
+        $suffix = $this->short[$format];
+
+        /* Process result */
+        $result = round(doubleval($number) / $divider, 2);
+
+        return sprintf('%g%s', $result, $suffix);
+    }
+
     public function date($date, $format='Y-m-d')
     {
         if( ! self::is_carbon($date) ) $date = date_create_from_format($format, $date);
@@ -162,6 +204,135 @@ class Terbilang{
         [
             $hour, $separator, $minute, $minute_str, $second, $second_str
         ], $template);
+    }
+
+    public function period($start, $end=null, $format=null)
+    {
+        if(is_null($end)){
+            $end = date('Y-m-d H:i:s', strtotime('now'));
+        }
+
+        if(is_null($format)){
+            $format = config('terbilang.period.format');
+        }
+
+        $type = strtoupper(config('terbilang.period.type', 'FULL'));
+
+        $datetime1 = date_create($start);
+        $datetime2 = date_create($end);
+
+        $interval = date_diff($datetime1, $datetime2);
+        $separator = config('terbilang.period.separator', ' ');
+        $terbilang = config('terbilang.period.terbilang', false);
+
+        if($type === 'FULL'){
+            $result = $interval->format('%y %m %d %h %i %s');
+            list($year, $month, $day, $hour, $minute, $second) = explode(' ', $result);
+
+            $list_format = [
+                '{YEAR}' => [
+                    'value' => $year,
+                    'label' => Lang::get('terbilang::date.dictionary.year'),
+                    'show' => config('terbilang.period.show.year')
+                ],
+                '{MONTH}' => [
+                    'value' => $month,
+                    'label' => Lang::get('terbilang::date.dictionary.month'),
+                    'show' => config('terbilang.period.show.month')
+                ],
+                '{DAY}' => [
+                    'value' => $day,
+                    'label' => Lang::get('terbilang::date.dictionary.day'),
+                    'show' => config('terbilang.period.show.day')
+                ],
+                '{HOUR}' => [
+                    'value' => $hour,
+                    'label' => Lang::get('terbilang::date.dictionary.hour'),
+                    'show' => config('terbilang.period.show.hour')
+                ],
+                '{MINUTE}' => [
+                    'value' => $minute,
+                    'label' => Lang::get('terbilang::date.dictionary.minute'),
+                    'show' => config('terbilang.period.show.minute')
+                ],
+                '{SECOND}' => [
+                    'value' => $second,
+                    'label' => Lang::get('terbilang::date.dictionary.second'),
+                    'show' => config('terbilang.period.show.second')
+                ],
+            ];
+
+            $temp_format = explode(' ', $format);
+
+            $result = [];
+
+            foreach($temp_format as $key){
+                $value = $list_format[$key]['value'];
+                $label = $list_format[$key]['label'];
+                $show = $list_format[$key]['show'];
+
+                if(($value <= 0 && config('terbilang.period.hide_zero_value')) || !$show){
+                    continue;
+                }
+
+                if($terbilang){
+                    $value = $this->make($value);
+                }
+
+                $result[] = $value . $separator . $label;
+            }
+
+            return implode(' ', $result);
+        }else{
+            $year = $interval->format('%y');
+            $month = $interval->format('%m');
+            $day = $interval->format('%a');
+            $hour = $interval->format('%h') + ($day * 24);
+            $minute = $interval->format('%i') + ($day * 24 * 60);
+            $second = $interval->format('%s') + ($day * 24 * 60 * 60);
+
+            $list_format = [
+                'YEAR' => [
+                    'value' => $year,
+                    'label' => Lang::get('terbilang::date.dictionary.year')
+                ],
+                'MONTH' => [
+                    'value' => $month,
+                    'label' => Lang::get('terbilang::date.dictionary.month')
+                ],
+                'DAY' => [
+                    'value' => $day,
+                    'label' => Lang::get('terbilang::date.dictionary.day')
+                ],
+                'HOUR' => [
+                    'value' => $hour,
+                    'label' => Lang::get('terbilang::date.dictionary.hour')
+                ],
+                'MINUTE' => [
+                    'value' => $minute,
+                    'label' => Lang::get('terbilang::date.dictionary.minute')
+                ],
+                'SECOND' => [
+                    'value' => $second,
+                    'label' => Lang::get('terbilang::date.dictionary.second')
+                ],
+            ];
+
+            $value = $list_format[$type]['value'];
+            $label = $list_format[$type]['label'];
+
+            if($terbilang){
+                $value = $this->make($value);
+            }
+
+            return $separator . $value . $separator . $label;
+        }
+    }
+
+    protected function validate($date, $format='Y-m-d H:i:s')
+    {
+        $d = \DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
     }
 
     protected static function is_carbon($object)

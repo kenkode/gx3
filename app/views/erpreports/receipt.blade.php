@@ -24,19 +24,13 @@ function asMoney($value) {
   font-size: 10px !important;
 }
 
-
-table, tr, td, th, tbody, thead, tfoot {
-    page-break-inside: avoid !important;
-}
-
 th,td{
   padding: 2px 7px !important;
 }
 
 div.mods{
-  display: inline-block !important;
   padding: 1% !important;
-  width: 45% !important;
+  width: 100% !important;
 }
 
 div.mods:nth-child(odd){
@@ -138,10 +132,10 @@ img#watermark{
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             
-            <td colspan="2" >
+            <td >
                 <strong>Receipt</strong><br><br>
                 <table class="demo" style="width:100%">
-                  
+                  <br><br>
                   <tr >
                     <td>Date</td><td>Receipt #</td>
                   </tr>
@@ -157,6 +151,7 @@ img#watermark{
         
       </table>
       <br>
+      PAYBILL NUMBER: 234312
       <table class="demo" style="width:50%">
         <tr>
           <td><strong>{{$erporder->client->type}}</strong></td>
@@ -327,7 +322,7 @@ Received the above goods in good order and condition
             <td colspan="2" >
                 <strong>Receipt</strong><br><br>
                 <table class="demo" style="width:100%">
-                  
+                  <br><br>
                   <tr >
                     <td>Date</td><td>Receipt #</td>
                   </tr>
@@ -342,7 +337,9 @@ Received the above goods in good order and condition
           
         
       </table>
+
       <br>
+       PAYBILL NUMBER: 234312
       <table class="demo" style="width:50%">
         <tr>
           <td><strong>{{$erporder->client->type}}</strong></td>

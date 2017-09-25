@@ -30,7 +30,7 @@
         <div class="form-group">
             <label for="username">Month:<span style="color:red">*</span> :</label>
             <div class="right-inner-addon ">
-                        <i class="glyphicon glyphicon-calendar"></i>
+            <i class="glyphicon glyphicon-calendar"></i>
             <input class="form-control datepicker23" placeholder="" type="text" name="month" id="month" value="{{{ Input::old('month') }}}" required readonly="readonly">
             </div>
         </div>

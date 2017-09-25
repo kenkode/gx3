@@ -71,4 +71,11 @@ class Erporder extends \Eloquent {
 							->distinct()
 							->first();
 	}
+
+	public static function getUser($id){
+		//$payments = 0;
+		$user = User::find($id);
+		
+		return $user->username;
+	}
 }

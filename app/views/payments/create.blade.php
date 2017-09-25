@@ -56,23 +56,29 @@ $(document).ready(function() {
         <div class="form-group">
             <label for="username">Client Name</label><span style="color:red">*</span> :
            <select name="order" id="order" class="form-control" required>
-                           <option></option>
-                           <option>..................................Select Client....................................</option>
-                           @foreach($clients as $client)
-                            <option value="{{$client->id}}">{{$client->name}}</option>
+                          <option></option>
+                          <option>..................................Select Client....................................</option>
+                          @foreach($clients as $client)
+                          <option value="{{$client->id}}">{{$client->name}}</option>
                            @endforeach
                         </select>
         </div>
 
-        <!-- <div class="form-group">
-            <label for="username">Amount To Be Paid<span style="color:red">*</span> :</label>
-            <input class="form-control" placeholder="" type="text" name="amounttopay" id="amounttopay" value="{{{ Input::old('amount') }}}">
-        </div> -->
+              <div class="form-group">
+              <label for="username">Due Amount</label><span style="color:red">*</span> :
+              <select name="order" id="order" class="form-control" required>
+                          <option></option>
+                          <option>..................................Select  Amount To pay....................................</option>
+                          @foreach($accounts as $account)
+                          <option value="{{$account->id}}">{{$account->balance}}</option>
+                           @endforeach
+                        </select>
+              </div>
 
        <!--  <div class="form-group">
             <label for="username">Amount Due :</label>
             <input class="form-control" placeholder="" type="text" name="withstandingamount" id="withstandingamount" value="{{{ Input::old('withstandingamount') }}}">
-        </div> -->
+        </div> 
 
         <div class="form-group">
         <label for="username">Amount Due</label> 
@@ -81,7 +87,7 @@ $(document).ready(function() {
             <span class="input-group-addon">KES</span>
             <input type="text" class="form-control"  name="amountdue" id="amountdue" value= '{{asMoney(0.00)}}' readonly> 
         </div>
-      </div>
+      </div>-->
 
         <div class="form-group">
             <label for="username">Payment Amount<span style="color:red">*</span> :</label>

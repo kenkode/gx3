@@ -44,10 +44,25 @@ $(document).ready(function(){
 </div>	
 </div>
 
+@if (Session::get('notice'))
+            <div class="alert alert-info">{{ Session::get('notice') }}</div>
+        @endif
+
+
 <div class="row">
     <div class="col-lg-12">
     <a href="{{URL::to('erpReports/PurchaseOrder/'.$order->id)}}" class="btn btn-primary"> Generate Purchase Order</a>
-    <!-- <a href="#" class="btn btn-primary"> Make Payment</a> -->
+    <a href="{{URL::to('submitpurchaseorder/'.$order->id)}}" class="btn btn-success"> Submit For Approval</a>
+    @if(Entrust::can('authorize_purchase_order'))
+    @if(($order->reviewed_by != null || $order->reviewed_by != "") && $order->authorized_by == null || $order->authorized_by == "")
+    <a href="{{URL::to('authorizepurchaseorder/'.$order->id)}}" class="btn btn-danger"> Authorize Purchase Order</a> 
+    @endif
+    @endif
+    @if(Entrust::can('review_purchase_order'))
+    @if($order->reviewed_by == null || $order->reviewed_by == "")
+    <a href="{{URL::to('reviewpurchaseorder/'.$order->id)}}" class="btn btn-warning"> Review Purchase Order</a> 
+    @endif
+    @endif
     </div>
 </div>
 

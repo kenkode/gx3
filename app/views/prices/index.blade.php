@@ -34,6 +34,10 @@ function asMoney($value) {
      </div>
     @endif
 
+    @if (Session::get('notice'))
+            <div class="alert alert-info">{{ Session::get('notice') }}</div>
+        @endif
+
     <div class="panel panel-default">
       <div class="panel-heading">
           <a class="btn btn-info btn-sm" href="{{ URL::to('prices/create')}}">New Discount</a>

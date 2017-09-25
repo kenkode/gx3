@@ -27,8 +27,12 @@
    
     <fieldset>
         <div class="form-group">
-            <label for="username">Item Name <span style="color:red">*</span> :</label>
-            <input class="form-control" placeholder="" type="text" name="name" id="name" value="{{{ Input::old('name') }}}" required>
+            <label for="username">Item Make <span style="color:red">*</span> :</label>
+            <input class="form-control" placeholder="" type="text" name="item_make" id="item_make" value="{{{ Input::old('item_make') }}}" required>
+        </div>
+        <div class="form-group">
+            <label for="username">Item Size <span style="color:red">*</span> :</label>
+            <input class="form-control" placeholder="" type="text" name="item_size" id="item_size" value="{{{ Input::old('item_size') }}}" required>
         </div>
 
          <div class="form-group">

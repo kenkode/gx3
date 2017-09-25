@@ -96,7 +96,7 @@ class ErpReportsController extends \BaseController {
                 ->join('items', 'erporderitems.item_id', '=', 'items.id')
                 ->join('clients', 'erporders.client_id', '=', 'clients.id')
                 ->where('erporders.id','=',$id)
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id',
                   'discount_amount','erporders.order_number as order_number','price','description')
                 ->first();
@@ -127,7 +127,7 @@ class ErpReportsController extends \BaseController {
                 ->join('clients', 'erporders.client_id', '=', 'clients.id')
                 
                 ->where('clients.id','=',$id)                                  
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id',
                   'discount_amount','erporders.order_number as order_number','price','erporderitems.client_discount as client_discount','erporders.date as date')
                 ->get();
@@ -175,7 +175,7 @@ class ErpReportsController extends \BaseController {
                 
                 ->where('clients.id','=',$id) 
                 ->whereBetween('erporders.date', array($from, $to))                                 
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id',
                   'discount_amount','erporders.id as erporderid','erporders.order_number as order_number',
                   'price','erporderitems.client_discount as client_discount','erporders.date as date')
@@ -254,7 +254,7 @@ class ErpReportsController extends \BaseController {
                 ->join('items', 'erporderitems.item_id', '=', 'items.id')
                 ->join('clients', 'erporders.client_id', '=', 'clients.id')
                 ->where('erporders.id','=',$id)
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id',
                   'discount_amount','erporders.order_number as order_number','price','description')
                 ->first();
@@ -290,7 +290,7 @@ class ErpReportsController extends \BaseController {
                 ->join('items', 'erporderitems.item_id', '=', 'items.id')
                 ->join('clients', 'erporders.client_id', '=', 'clients.id')
                 ->where('erporders.id','=',$id)
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id',
                   'discount_amount','erporders.order_number as order_number','price','description')
                 ->first();
@@ -365,7 +365,7 @@ class ErpReportsController extends \BaseController {
                 //->where('erporders.client_id', 17)
                 ->whereBetween('erporders.date', array(Input::get("from"), Input::get("to")))
                 ->orderBy('erporders.order_number', 'Desc')
-                ->select(DB::raw('erporders.id,clients.name as client,erporderitems.client_discount as percentage_discount,items.name as item,quantity,clients.address as address,
+                ->select(DB::raw('erporders.id,clients.name as client,erporderitems.client_discount as percentage_discount,items.item_make as item,quantity,clients.address as address,
                   clients.phone as phone,clients.email as email,clients.category as category,erporders.id as id,erporders.status,
                   erporders.date,erporders.order_number as order_number,price,description,erporders.type'))
                 
@@ -433,7 +433,7 @@ class ErpReportsController extends \BaseController {
                 ->where('erporders.status','!=','cancelled') 
                 //->whereBetween('erporders.date', array($from, $to))
                 ->orderBy('erporders.order_number', 'Desc')
-                ->select(DB::raw('clients.name as client,items.name as item,quantity,clients.address as address,erporderitems.client_discount as percentage_discount,
+                ->select(DB::raw('clients.name as client,items.item_make as item,quantity,clients.address as address,erporderitems.client_discount as percentage_discount,
                   clients.category as category, clients.phone as phone,clients.email as email,erporders.id as id,erporders.status,
                   erporders.date,erporders.order_number as order_number,price,description,erporders.type'))                
                 ->get();        
@@ -511,7 +511,7 @@ class ErpReportsController extends \BaseController {
                     ->where('erporders.type','=','purchases')
                     ->whereBetween('erporders.date', array(Input::get("from"), Input::get("to")))
                     ->orderBy('erporders.order_number', 'Desc')
-                    ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                    ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                       'clients.phone as phone','clients.email as email','erporders.id as id','erporders.status',
                       'discount_amount','erporders.date','erporders.order_number as order_number','price','description','erporders.type')
                     ->get();
@@ -533,7 +533,7 @@ class ErpReportsController extends \BaseController {
     public function pricelist(){
 
         $pricelist = $pricelist = DB::table('items')
-                    ->select('items.name as item','items.purchase_price','items.selling_price')
+                    ->select('items.item_make as item','items.purchase_price','items.selling_price')
                     ->get();
 
 
@@ -553,7 +553,7 @@ class ErpReportsController extends \BaseController {
                 ->join('items', 'erporderitems.item_id', '=', 'items.id')
                 ->join('clients', 'erporders.client_id', '=', 'clients.id')
                 ->where('erporders.id','=',$id)
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id',
                   'discount_amount','erporders.order_number as order_number','price','description')
                 ->first();
@@ -596,7 +596,7 @@ class ErpReportsController extends \BaseController {
                 ->join('items', 'erporderitems.item_id', '=', 'items.id')
                 ->join('clients', 'erporders.client_id', '=', 'clients.id')
                 ->where('erporders.id','=',$id)
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id',
                   'discount_amount','erporders.order_number as order_number','price','description')
                 ->first();
@@ -642,6 +642,133 @@ class ErpReportsController extends \BaseController {
 
     }
 
+    public function submitpurchaseorder($id){
+
+        $erporder = Erporder::find($id);
+        $erporder->prepared_by = Confide::user()->id;
+        $erporder->update();
+        $username = Confide::user()->username;
+
+        $orders = DB::table('erporders')
+                ->join('erporderitems', 'erporders.id', '=', 'erporderitems.erporder_id')
+                ->join('items', 'erporderitems.item_id', '=', 'items.id')
+                ->join('clients', 'erporders.client_id', '=', 'clients.id')
+                ->where('erporders.id','=',$id)
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
+                  'clients.phone as phone','clients.email as email','erporders.id as id',
+                  'discount_amount','erporders.order_number as order_number','price','description')
+                ->get();
+
+        $txorders = DB::table('tax_orders')
+                ->join('erporders', 'tax_orders.order_number', '=', 'erporders.order_number')
+                ->join('taxes', 'tax_orders.tax_id', '=', 'taxes.id')
+                ->where('erporders.id','=',$id)
+                ->get();
+
+        $count = DB::table('tax_orders')->count();
+
+        $erporder = Erporder::findorfail($id);
+
+
+        $organization = Organization::find(1);
+
+        $send_mail = Mail::send('emails.submitpurchase', array('name' => 'Victor Kotonya', 'username' => $username,'orders' => $orders,'txorders' => $txorders,'count' => $count,'erporder' => $erporder,'organization' => $organization,'id' => $id), function($message)
+        {   
+            $message->from('info@lixnet.net', 'Gas Express');
+            $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Purchase Order Approval!');
+
+    
+        });
+    
+        return Redirect::to('erppurchases/show/'.$id)->with('notice', 'Succeffully submited approval');
+        
+    }
+
+
+    public function authorizepurchaseorder($id){
+
+        $erporder = Erporder::find($id);
+        $erporder->authorized_by = Confide::user()->id;
+        $erporder->update();
+        $username = Confide::user()->username;
+
+        $orders = DB::table('erporders')
+                ->join('erporderitems', 'erporders.id', '=', 'erporderitems.erporder_id')
+                ->join('items', 'erporderitems.item_id', '=', 'items.id')
+                ->join('clients', 'erporders.client_id', '=', 'clients.id')
+                ->where('erporders.id','=',$id)
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
+                  'clients.phone as phone','clients.email as email','erporders.id as id',
+                  'discount_amount','erporders.order_number as order_number','price','description')
+                ->get();
+
+        $txorders = DB::table('tax_orders')
+                ->join('erporders', 'tax_orders.order_number', '=', 'erporders.order_number')
+                ->join('taxes', 'tax_orders.tax_id', '=', 'taxes.id')
+                ->where('erporders.id','=',$id)
+                ->get();
+
+        $count = DB::table('tax_orders')->count();
+
+        $erporder = Erporder::findorfail($id);
+
+
+        $organization = Organization::find(1);
+
+        /*$send_mail = Mail::send('emails.authorizepurchase', array('name' => 'Victor Kotonya', 'username' => $username,'orders' => $orders,'txorders' => $txorders,'count' => $count,'erporder' => $erporder,'organization' => $organization,'id' => $id), function($message)
+        {   
+            $message->from('info@lixnet.net', 'Gas Express');
+            $message->to('wangoken2@gmail.com', 'Gas Express')->subject('Purchase Order Authorization!');
+
+    
+        });*/
+    
+        return Redirect::to('erppurchases/show/'.$id)->with('notice', 'Succeffully authorized purchase order');
+        
+    }
+
+    public function reviewpurchaseorder($id){
+
+        $erporder = Erporder::find($id);
+        $erporder->reviewed_by = Confide::user()->id;
+        $erporder->update();
+        $username = Confide::user()->username;
+
+        $orders = DB::table('erporders')
+                ->join('erporderitems', 'erporders.id', '=', 'erporderitems.erporder_id')
+                ->join('items', 'erporderitems.item_id', '=', 'items.id')
+                ->join('clients', 'erporders.client_id', '=', 'clients.id')
+                ->where('erporders.id','=',$id)
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
+                  'clients.phone as phone','clients.email as email','erporders.id as id',
+                  'discount_amount','erporders.order_number as order_number','price','description')
+                ->get();
+
+        $txorders = DB::table('tax_orders')
+                ->join('erporders', 'tax_orders.order_number', '=', 'erporders.order_number')
+                ->join('taxes', 'tax_orders.tax_id', '=', 'taxes.id')
+                ->where('erporders.id','=',$id)
+                ->get();
+
+        $count = DB::table('tax_orders')->count();
+
+        $erporder = Erporder::findorfail($id);
+
+
+        $organization = Organization::find(1);
+
+        $send_mail = Mail::send('emails.reviewpurchase', array('name' => 'Victor Kotonya', 'username' => $username,'orders' => $orders,'txorders' => $txorders,'count' => $count,'erporder' => $erporder,'organization' => $organization,'id' => $id), function($message)
+        {   
+            $message->from('info@lixnet.net', 'Gas Express');
+            $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Purchase Order Review!');
+
+    
+        });
+    
+        return Redirect::to('erppurchases/show/'.$id)->with('notice', 'Succeffully reviewed purchase order');
+        
+    }
+
 
     public function PurchaseOrder($id){
 
@@ -650,7 +777,7 @@ class ErpReportsController extends \BaseController {
                 ->join('items', 'erporderitems.item_id', '=', 'items.id')
                 ->join('clients', 'erporders.client_id', '=', 'clients.id')
                 ->where('erporders.id','=',$id)
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id',
                   'discount_amount','erporders.order_number as order_number','price','description')
                 ->get();
@@ -670,8 +797,11 @@ class ErpReportsController extends \BaseController {
 
         $pdf = PDF::loadView('erpreports.PurchaseOrder', compact('orders','erporder','txorders','count' ,'organization'))->setPaper('a4');
     
+        if($erporder->prepared_by ==null || $erporder->reviewed_by == null || $erporder->authorized_by == null){
+        return Redirect::to('erppurchases/show/'.$id)->with('notice', 'This purchase order has not been authorized');
+        }else{
         return $pdf->stream('Purchase Order.pdf');
-        
+        }
     }
 
     public function vehicles(){
@@ -1014,7 +1144,7 @@ class ErpReportsController extends \BaseController {
                 ->where('erporders.status','!=','cancelled') 
                 ->where('erporders.date', date('Y-m-d'))
                 ->orderBy('erporders.order_number', 'Desc')
-                ->select(DB::raw('clients.name as client,items.name as item,quantity,clients.address as address,erporderitems.client_discount as percentage_discount,
+                ->select(DB::raw('clients.name as client,items.item_make as item,quantity,clients.address as address,erporderitems.client_discount as percentage_discount,
                   clients.category as category, clients.phone as phone,clients.email as email,erporders.id as id,erporders.status,
                   erporders.date,erporders.order_number as order_number,price,description,erporders.type'))                
                 ->get();  
@@ -1127,7 +1257,7 @@ class ErpReportsController extends \BaseController {
     $filePath = 'app/views/temp/';
 
     $pricelist = DB::table('items')
-                    ->select('items.name as item','items.purchase_price','items.selling_price')
+                    ->select('items.item_make as item','items.purchase_price','items.selling_price')
                     ->get();
 
 
@@ -1175,7 +1305,7 @@ class ErpReportsController extends \BaseController {
                 //->where('erporders.client_id', 17)
                 ->whereBetween('erporders.date', array($from, $to))
                 ->orderBy('erporders.order_number', 'Desc')
-                ->select(DB::raw('erporders.id,clients.name as client,erporderitems.client_discount as percentage_discount,items.name as item,quantity,clients.address as address,
+                ->select(DB::raw('erporders.id,clients.name as client,erporderitems.client_discount as percentage_discount,items.item_make as item,quantity,clients.address as address,
                   clients.phone as phone,clients.email as email,clients.category as category,erporders.id as id,erporders.status,
                   erporders.date,erporders.order_number as order_number,price,description,erporders.type'))
                 
@@ -1274,7 +1404,7 @@ class ErpReportsController extends \BaseController {
                 ->where('erporders.status','!=','cancelled') 
                 ->where('erporders.date', date('Y-m-d'))
                 ->orderBy('erporders.order_number', 'Desc')
-                ->select(DB::raw('clients.name as client,items.name as item,quantity,clients.address as address,erporderitems.client_discount as percentage_discount,
+                ->select(DB::raw('clients.name as client,items.item_make as item,quantity,clients.address as address,erporderitems.client_discount as percentage_discount,
                   clients.category as category, clients.phone as phone,clients.email as email,erporders.id as id,erporders.status,
                   erporders.date,erporders.order_number as order_number,price,description,erporders.type'))                
                 ->get();  
@@ -1335,7 +1465,7 @@ class ErpReportsController extends \BaseController {
                 ->where('erporders.status','!=','cancelled') 
                 ->whereBetween('erporders.date', array($from, $to))
                 ->orderBy('erporders.order_number', 'Desc')
-                ->select(DB::raw('clients.name as client,items.name as item,quantity,clients.address as address,erporderitems.client_discount as percentage_discount,
+                ->select(DB::raw('clients.name as client,items.item_make as item,quantity,clients.address as address,erporderitems.client_discount as percentage_discount,
                   clients.phone as phone,clients.email as email,erporders.id as id,erporders.status,
                   erporders.date,erporders.order_number as order_number,price,description,erporders.type'))         
                                 
@@ -1429,7 +1559,7 @@ class ErpReportsController extends \BaseController {
                 ->where('erporders.status','!=','cancelled')  
                 ->whereBetween('erporders.date', array($from, $to))
                 ->orderBy('erporders.order_number', 'Desc')
-                ->select('clients.name as client','items.name as item','quantity','clients.address as address',
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
                   'clients.phone as phone','clients.email as email','erporders.id as id','erporders.status',
                   'discount_amount','erporders.date','erporders.order_number as order_number','price','description','erporders.type')
                 ->get();

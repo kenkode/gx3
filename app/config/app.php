@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'debug' => false,
+	'debug' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -127,7 +127,7 @@ return array(
 		'Zizaco\Confide\ServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
 		'Former\FormerServiceProvider',
-		'Barryvdh\Snappy\ServiceProvider',
+		'Barryvdh\DomPDF\ServiceProvider',
 		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Cornford\Backup\Providers\BackupServiceProvider',
 		'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
@@ -202,7 +202,7 @@ return array(
 		'Former' => 'Former\Facades\Former',
 		'Confide' => 'Zizaco\Confide\Facade',
 		'Entrust' => 'Zizaco\Entrust\EntrustFacade',
-		'PDF' => 'Barryvdh\Snappy\Facades\SnappyPdf',
+		'PDF' => 'Barryvdh\DomPDF\Facade',
 		'Image' => 'Barryvdh\Snappy\Facades\SnappyImage',
 		'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 		'Backup'         => 'Cornford\Backup\Facades\Backup',

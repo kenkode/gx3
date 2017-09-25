@@ -1,6 +1,6 @@
 # Snappy
 
-Snappy is a PHP5 library allowing thumbnail, snapshot or PDF generation from a url or a html page.
+Snappy is a PHP library allowing thumbnail, snapshot or PDF generation from a url or a html page.
 It uses the excellent webkit-based [wkhtmltopdf and wkhtmltoimage](http://wkhtmltopdf.org/)
 available on OSX, linux, windows.
 
@@ -56,6 +56,7 @@ $snappy->setOption('disable-javascript', true);
 $snappy->setOption('no-background', true);
 $snappy->setOption('allow', array('/path1', '/path2'));
 $snappy->setOption('cookie', array('key' => 'value', 'key2' => 'value2'));
+$snappy->setOption('post', array('key' => 'value'));
 $snappy->setOption('cover', 'pathToCover.html');
 // .. or pass a cover as html
 $snappy->setOption('cover', '<h1>Bill cover</h1>');
@@ -95,6 +96,7 @@ $snappy = new Pdf($myProjectDirectory . '/vendor/h4cc/wkhtmltopdf-i386/bin/wkhtm
 $snappy = new Pdf($myProjectDirectory . '/vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
 ```
 
+*N.B.* These static binaries are extracted from  [Debian7 packages](https://github.com/h4cc/wkhtmltopdf-amd64/issues/13#issuecomment-150948179), so it might not be compatible with non-debian based linux distros 
 ## Some use cases
 
 If you want to generate table of contents and you want to use custom XSL stylesheet, do the following:

@@ -20,9 +20,6 @@ table {
   background-color: transparent;
 }
 
-table, tr, td, th, tbody, thead, tfoot {
-    page-break-inside: avoid !important;
-}
 
 th,td{
   padding: 2px 7px !important;

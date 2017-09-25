@@ -52,7 +52,7 @@
 							<option value="">==================================</option>
 							@foreach($items as $item)
 								@if(Stock::getStockAmount($item)  > 0)
-									<option value="{{ $item->id }}">{{ $item->name }} - ({{ Stock::getStockAmount($item) }} items)</option>
+									<option value="{{ $item->id }}">{{ $item->item_make }} - ({{ Stock::getStockAmount($item) }} items)</option>
 								@endif
 							@endforeach
 						</select>

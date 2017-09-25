@@ -27,11 +27,16 @@
      </div>
     @endif
     
+    @if (Session::get('notice'))
+            <div class="alert alert-info">{{ Session::get('notice') }}</div>
+        @endif
     <div class="panel panel-default">
       <div class="panel-heading">
           <a class="btn btn-info btn-sm" href="{{ URL::to('stocks/create')}}">Receive Stock </a> &emsp;
-          <a class="btn btn-primary btn-sm" href="{{ URL::to('stock/tracking') }}">Track Stocks</a>
-          <!-- <a class="btn btn-info btn-sm" href="{{ URL::to('stocks/transfer')}}">Transfer Stock </a> -->
+          <a class="btn btn-primary btn-sm" href="{{ URL::to('stock/tracking') }}">Track Stocks</a> &emsp;
+          @if(Entrust::can('confirm_stock'))
+          <a class="btn btn-warning btn-sm" href="{{ URL::to('stocks/confirmation')}}">Confirm Stock </a> 
+          @endif
         </div>
         <div class="panel-body">
 
@@ -57,7 +62,7 @@
         <tr>
 
           <td> {{ $i }}</td>
-          <td>{{ $item->name }}</td>
+          <td>{{ $item->item_make }}</td>
                
           <td>{{Stock::getStockAmount($item)}}</td>
            <td>   <dir>
@@ -90,7 +95,7 @@
 
         if ($reorder) 
           
-        echo "<script type='text/javascript'> alert('$message');</script>";
+        //echo "<script type='text/javascript'> alert('$message');</script>";
            
         $i++; 
         ?>

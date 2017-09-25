@@ -197,9 +197,11 @@ Route::get('prices/edit/{id}', 'PricesController@edit');
 Route::post('prices/update/{id}', 'PricesController@update');
 Route::get('prices/delete/{id}', 'PricesController@destroy');
 Route::get('prices/show/{id}', 'PricesController@show');
+Route::get('approvepriceupdate/{client}/{item}/{discount}/{receiver}/{id}', 'PricesController@approveprice');
 
 Route::resource('items', 'ItemsController');
 Route::get('items/edit/{id}', 'ItemsController@edit');
+Route::get('approveitemupdate/{name}/{size}/{description}/{pprice}/{sprice}/{sku}/{tagid}/{reorderlevel}/{receiver}/{id}', 'ItemsController@approveitem');
 Route::post('items/update/{id}', 'ItemsController@update');
 Route::get('items/delete/{id}', 'ItemsController@destroy');
 Route::get('items/code/{id}', 'ItemsController@code');
@@ -219,12 +221,6 @@ Route::resource('payments', 'PaymentsController');
 Route::get('payments/edit/{id}', 'PaymentsController@edit');
 Route::post('payments/update/{id}', 'PaymentsController@update');
 Route::get('payments/delete/{id}', 'PaymentsController@destroy');
-
-
-
-
-
-
 
 
 
@@ -2295,10 +2291,11 @@ Route::get('purchaseorders/create', function(){
   $order_number = date("Y/m/d/").str_pad($count+1, 4, "0", STR_PAD_LEFT);
   $items = Item::all();
   $locations = Location::all();
+  $erporders = Erporder::all();
 
   $clients = Client::all();
 
-  return View::make('erppurchases.create', compact('items', 'locations', 'order_number', 'clients'));
+  return View::make('erppurchases.create', compact('items', 'locations', 'order_number', 'clients', 'erporders'));
 });
 
 
@@ -2595,6 +2592,15 @@ Route::get('stock/tracking', function(){
   $leased = ItemTracker::all();
 
   return View::make('stocks/track', compact('stocks', 'items', 'clients', 'location', 'leased'));
+});
+
+Route::get('confirmstock/{id}/{name}', function($id,$name){
+  $stock = Stock::find($id);
+  $stock->is_confirmed = 1;
+  $stock->confirmed_id = 2;
+  $stock->update();
+
+  return "<strong><span style='color:green'>Stock for item ".$name." confirmed as received!</span></strong>";
 });
 
 
@@ -3416,6 +3422,10 @@ Route::get('email/send_payments', 'ErpReportsController@sendMail_payments');
 Route::get('email/send_stock', 'ErpReportsController@sendMail_stock');
 Route::get('email/send_account', 'ErpReportsController@sendMail_account');
 Route::get('email/send_merged','ErpReportsController@sendMail_MergedReport');
+
+Route::get('authorizepurchaseorder/{id}','ErpReportsController@authorizepurchaseorder');
+Route::get('reviewpurchaseorder/{id}','ErpReportsController@reviewpurchaseorder');
+Route::get('submitpurchaseorder/{id}','ErpReportsController@submitpurchaseorder');
 
 // Send Merged Report
 Route::get('sendMergedMail', 'ErpReportsController@sendMailTo');

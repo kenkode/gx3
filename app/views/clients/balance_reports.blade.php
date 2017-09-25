@@ -29,10 +29,6 @@
       border-collapse: collapse;
     }
 
-table, tr, td, th, tbody, thead, tfoot {
-    page-break-inside: avoid !important;
-}
-
     p, h5{
       /* font-family: 'Roboto';
       font-size: 12px; */
@@ -49,10 +45,7 @@ table, tr, td, th, tbody, thead, tfoot {
       text-align: right;
     }
 
-    tr td.dum{
-      font-weight: normal;
-      text-align: left;
-    }
+ 
 
     table tr.body td{
       vertical-align: top;
@@ -73,7 +66,7 @@ table, tr, td, th, tbody, thead, tfoot {
 <body>
 
 <div class="row">
-	<div class="col-lg-12" style="text-align: center">
+	<div style="text-align: center">
 		<h3>Gas Express</h3>
     <h4>A/R Aging Summary (Values in Home Currency)</h4>
     <h5>As of {{ date("F j, Y"); }}</h5>
@@ -82,8 +75,6 @@ table, tr, td, th, tbody, thead, tfoot {
 </div>
 
 <div class="row">
-  <div class="col-lg-12">
-    <div class="col-lg-4 col-lg-offset-1">
       <h5>AMOUNT RECEIVED TODAY</h5>
       <p>
         AMOUNT RECEIVED: <strong>KES. {{ asMoney($total_payment->amount_paid) }}</strong> 
@@ -92,7 +83,6 @@ table, tr, td, th, tbody, thead, tfoot {
       <p>AMOUNT RECEIVABLE: <strong>KES. {{ asMoney($due) }}</strong></p>
     </div><br>
 
-    <div class="col-lg-4 col-lg-offset-1">
       <h5>AMOUNT RECEIVED IN THE LAST MONTH</h5>
       <p>
         AMOUNT RECEIVED: <strong>KES. {{ asMoney($total_monthly->amount_paid) }}</strong> 
@@ -105,7 +95,6 @@ table, tr, td, th, tbody, thead, tfoot {
 </div>
 
 <div class="row">
-	<div class="col-lg-12">
 		  @if (Session::has('flash_message'))
       	<div class="alert alert-success">
       		{{ Session::get('flash_message') }}
@@ -171,7 +160,7 @@ table, tr, td, th, tbody, thead, tfoot {
 						@endif	
 						@endforeach
               <tr class="totals">
-                <td colspan="2">TOTALS</td>
+                <td>TOTALS</td>
                 <!-- <td align="center">{{ asMoney($client->percentage_discount) }}</td> -->
                 <td> {{ asMoney($dueTodayTotal) }} </td>
                 <td> {{ asMoney($due30Total) }} </td>

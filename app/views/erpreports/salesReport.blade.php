@@ -14,10 +14,6 @@ table {
   background-color: transparent;
 }
 
-table, tr, td, th, tbody, thead, tfoot {
-    page-break-inside: avoid !important;
-}
-
 table.data{
   border-collapse: collapse;
   border: 1px solid #BBB;

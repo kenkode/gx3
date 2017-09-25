@@ -37,6 +37,26 @@ function asMoney($value) {
             <input class="form-control" placeholder="" type="text" name="name" id="name" value="{{{ Input::old('name') }}}" required>
         </div>
 
+         <div class="radio">
+          <label>
+              <input type="radio" name="type" id="customer" value="Customer">
+                    Credit
+              </label>
+              <br>
+              <p>              
+
+        </div>
+
+        <div class="radio">
+          <label>
+              <input type="radio" name="type" id="supplier" value="Supplier">
+                    Cash
+              </label>
+              <br>
+              <p>              
+
+        </div>
+
          <div class="form-group">
             <label for="username">Email:</label>
             <input class="form-control" placeholder="" type="email" name="email_office" id="email_office" value="{{{Input::old('email_office') }}}" >

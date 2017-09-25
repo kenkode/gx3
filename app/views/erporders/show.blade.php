@@ -63,6 +63,7 @@ $(document).ready(function(){
                 @else
                     <button type="submit" class="btn btn-primary input-sm"><i class="fa fa-file fa-fw"></i> Delivery Note/Receipt</button>
                 @endif
+                <button type="submit" class="btn btn-primary input-sm"><i class="fa fa-file fa-fw"></i> Invoice</button>
             </div>
         </form>
     </div>

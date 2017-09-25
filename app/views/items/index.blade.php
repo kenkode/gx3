@@ -36,6 +36,10 @@ function asMoney($value) {
      </div>
     @endif
 
+    @if (Session::get('notice'))
+            <div class="alert alert-info">{{ Session::get('notice') }}</div>
+        @endif
+
     <div class="panel panel-default">
       <div class="panel-heading">
           <a class="btn btn-info btn-sm" href="{{ URL::to('items/create')}}">new item</a>
@@ -49,7 +53,8 @@ function asMoney($value) {
       <thead>
 
         <th>#</th>
-        <th>Name</th>
+        <th>Item Make</th>
+        <th>Item Size</th>
         <th>Description</th>
         <th>Purchase Price</th>
         <th>Selling Price</th>
@@ -64,7 +69,8 @@ function asMoney($value) {
         <tr>
 
           <td> {{ $i }}</td>
-          <td>{{ $item->name }}</td>
+          <td>{{ $item->item_make }}</td>
+          <td>{{ $item->item_size }}</td>
           <td>{{ $item->description }}</td>
           <td align="right">{{ asMoney($item->purchase_price) }}</td>
           <td align="right">{{ asMoney($item->selling_price) }}</td>

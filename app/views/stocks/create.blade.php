@@ -58,7 +58,7 @@ $(document).ready(function() {
             <select name="item" class="form-control" id="item" required>
             <option> select item ... </option>
                 @foreach($items as $item)
-                <option value="{{$item->id}}">{{$item->name}}</option>
+                <option style="color:black" value="{{$item->id}}">{{$item->item_make}}</option>
                 @endforeach
                 
             </select>
