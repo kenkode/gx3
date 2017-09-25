@@ -14,6 +14,10 @@
   </div>
 </div>
 
+@if (Session::get('notice'))
+            <div class="alert alert-info">{{ Session::get('notice') }}</div>
+        @endif
+
 <div class="row"> 
   <!-- QUICK LINK BUTTONS -->
   <div class="col-lg-12">

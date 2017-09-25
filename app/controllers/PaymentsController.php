@@ -63,7 +63,29 @@ class PaymentsController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-		//$erporder = Erporder::find(Input::get('order'));
+		if (! Entrust::can('confirm_payments') ) // Checks the current user
+        {
+
+		$client = Client::findOrFail(Input::get('order'));
+		$client_id = Input::get('order');
+		//$payment->erporder_id = Input::get('order');
+		$amount_paid = Input::get('amount');	
+		$paymentmethod_id = Input::get('paymentmethod');
+		$account_id = Input::get('account');
+		$received_by = Input::get('received_by');
+		$payment_date = date("Y-m-d",strtotime(Input::get('pay_date')));
+
+		$username = Confide::user()->username;
+
+		$send_mail = Mail::send('emails.payment', array('name' => 'Victor Kotonya', 'username' => $username,'client' => $client,'amount' => $amount_paid,'paymentmethod' => $paymentmethod_id,'account'=>$account_id,'received_by'=>$received_by,'payment_date'=>$payment_date,'receiver'=>Confide::user()->id,'id' => Input::get('order')), function($message)
+        {   
+		    $message->from('info@lixnet.net', 'Gas Express');
+		    $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Payment Approval!');
+
+    
+        });
+        return Redirect::to('payments')->with('notice', 'Admin approval is needed for this payment');
+        }else{
 
 		$payment = new Payment;
 
@@ -77,6 +99,7 @@ class PaymentsController extends \BaseController {
 		$payment->payment_date = date("Y-m-d",strtotime(Input::get('pay_date')));
 		$payment->save();
 
+       
 		
 		if($client->type === 'Customer'){
 			Account::where('id', Input::get('paymentmethod'))->increment('balance', Input::get('amount'));	
@@ -132,6 +155,82 @@ class PaymentsController extends \BaseController {
         
 		return Redirect::route('payments.index')->withFlashMessage('Payment successfully created!');
 	}
+	}
+
+	public function approvepaymentupdate($client,$amount,$paymentmethod,$account,$received_by,$date,$receiver,$id){
+    
+	    $payment = new Payment;
+
+		$client = Client::findOrFail($id);
+		$payment->client_id = $id;
+		$payment->erporder_id = $id;
+		$payment->amount_paid = $amount;	
+		$payment->paymentmethod_id = $paymentmethod;
+		$payment->account_id = $account;
+		$payment->received_by = $received_by;
+		$payment->payment_date = $date;
+		$payment->confirmed_id = 2;
+		$payment->receiver_id = $receiver;
+		$payment->save();
+
+       
+		
+		if($client->type === 'Customer'){
+			Account::where('id', $paymentmethod)->increment('balance', $amount);	
+		} else{
+			Account::where('id', $paymentmethod)->decrement('balance', $amount);
+		}
+
+         
+       /* if($client->type=='Customer'){
+         DB::table('accounts')
+            ->join('payments','accounts.id','=','payments.account_id')
+            ->join('erporders','payments.client_id','=','erporders.client_id')
+            ->where('accounts.id', Input::get('account'))
+            ->where('erporders.type','sales')
+            ->increment('accounts.balance', Input::get('amount'));*/
+
+
+           /* $data = array(
+			'date' => date("Y-m-d",strtotime(Input::get('paydate'))), 
+			'debit_account' => Input::get('account'),
+			'credit_account' => Input::get('credit_account'),
+			'description' => Input::get('description'),
+			'amount' => Input::get('amount'),
+			'initiated_by' => Input::get('received_by')
+			);
+		
+		$journal = new Journal;
+
+		$journal->journal_entry($data);
+        }else{
+        	DB::table('accounts')
+            ->join('payments','accounts.id','=','payments.account_id')
+            ->join('erporders','payments.client_id','=','erporders.client_id')
+            ->where('accounts.id', Input::get('account'))
+            ->where('erporders.type','purchases')
+            ->decrement('accounts.balance', Input::get('amount'));
+
+            $data = array(
+			'date' => date("Y-m-d",strtotime(Input::get('paydate'))), 
+			'debit_account' => Input::get('account'),
+			'credit_account' => 3,
+			'description' => Input::get('description'),
+			'amount' => Input::get('amount'),
+			'initiated_by' => Input::get('received_by')
+			);
+		
+		$journal = new Journal;
+
+		$journal->journal_entry($data);
+        }*/
+
+
+        
+		return "<strong><span style='color:green'>Payment for client ".$client->name." successfully approved!</span></strong>";
+
+    }
+
 
 	/**
 	 * Display the specified payment.

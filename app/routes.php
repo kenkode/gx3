@@ -213,6 +213,7 @@ Route::post('expenses/update/{id}', 'ExpensesController@update');
 Route::get('expenses/delete/{id}', 'ExpensesController@destroy');
 
 Route::resource('paymentmethods', 'PaymentmethodsController');
+Route::get('approvepaymentupdate/{client}/{amount}/{paymentmethod}/{account}/{received_by}/{date}/{receiver}/{id}', 'PaymentsController@approvepaymentupdate');
 Route::get('paymentmethods/edit/{id}', 'PaymentmethodsController@edit');
 Route::post('paymentmethods/update/{id}', 'PaymentmethodsController@update');
 Route::get('paymentmethods/delete/{id}', 'PaymentmethodsController@destroy');
