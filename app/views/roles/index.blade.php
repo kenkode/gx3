@@ -38,8 +38,8 @@
   								</button>
   				
   								<ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Permissions</a></li>
-    								<li><a href="#">Edit</a></li>
+                    <li><a href="{{URL::to('roles/show/'.$role->id)}}">Permissions</a></li>
+                    <li><a href="{{URL::to('roles/edit/'.$role->id)}}">Edit</a></li>
 
     								
     								<li><a href="{{URL::to('roles/destroy/'.$role->id)}}">Delete</a></li>

@@ -103,6 +103,7 @@ Route::group(['before' => 'manage_roles'], function() {
 Route::resource('roles', 'RolesController');
 Route::get('roles/create', 'RolesController@create');
 Route::get('roles/edit/{id}', 'RolesController@edit');
+Route::get('roles/show/{id}', 'RolesController@show');
 Route::post('roles/update/{id}', 'RolesController@update');
 Route::get('roles/delete/{id}', 'RolesController@destroy');
 
