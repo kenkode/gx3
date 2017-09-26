@@ -11,7 +11,13 @@ class ClientsController extends \BaseController {
 	{
 		$clients = Client::all();
 
+		if (! Entrust::can('view_client') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('clients.index', compact('clients'));
+	}
 	}
 
 	/**
@@ -22,7 +28,12 @@ class ClientsController extends \BaseController {
 	public function create()
 	{
 		$items = Item::all();
+		if (! Entrust::can('create_client') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('clients.create', compact('items'));
+	}
 	}
 
 	/**
@@ -68,7 +79,13 @@ class ClientsController extends \BaseController {
 	{
 		$client = Client::findOrFail($id);
 
+		if (! Entrust::can('view_client') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('clients.show', compact('client'));
+	}
 	}
 
 	/**
@@ -81,7 +98,13 @@ class ClientsController extends \BaseController {
 	{
 		$client = Client::find($id);
 
+		if (! Entrust::can('update_client') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('clients.edit', compact('client'));
+	}
 	}
 
 	/**
@@ -129,7 +152,12 @@ class ClientsController extends \BaseController {
 	{
 		Client::destroy($id);
 
+        if (! Entrust::can('delete_client') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return Redirect::route('clients.index')->withDeleteMessage('Client successfully deleted!');
+	}
 	}
 
 }

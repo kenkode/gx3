@@ -11,7 +11,13 @@ class PaymentmethodsController extends \BaseController {
 	{
 		$paymentmethods = Paymentmethod::all();
 
+		if (! Entrust::can('view_payment_methods') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('paymentmethods.index', compact('paymentmethods'));
+	}
 	}
 
 	/**
@@ -22,7 +28,13 @@ class PaymentmethodsController extends \BaseController {
 	public function create()
 	{
 		$accounts = Account::all();
+
+		if (! Entrust::can('create_payment_methods') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('paymentmethods.create',compact('accounts'));
+	}
 	}
 
 	/**
@@ -58,7 +70,12 @@ class PaymentmethodsController extends \BaseController {
 	{
 		$paymentmethod = Paymentmethod::findOrFail($id);
 
+        if (! Entrust::can('view_payment_methods') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('paymentmethods.show', compact('paymentmethod'));
+	}
 	}
 
 	/**
@@ -71,7 +88,13 @@ class PaymentmethodsController extends \BaseController {
 	{
 		$paymentmethod = Paymentmethod::find($id);
         $accounts = Account::all();
+
+        if (! Entrust::can('update_payment_methods') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('paymentmethods.edit', compact('paymentmethod','accounts'));
+	}
 	}
 
 	/**
@@ -108,7 +131,12 @@ class PaymentmethodsController extends \BaseController {
 	{
 		Paymentmethod::destroy($id);
 
+        if (! Entrust::can('delete_payment_methods') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return Redirect::route('paymentmethods.index')->withDeleteMessage('Payment Method successfully deleted!');
+	}
 	}
 
 }

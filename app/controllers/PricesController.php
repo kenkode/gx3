@@ -11,7 +11,13 @@ class PricesController extends \BaseController {
 	{
 		$prices = Price::all();
 
+		if (! Entrust::can('view_pricing') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('prices.index', compact('prices'));
+	}
 	}
 
 	/**
@@ -23,7 +29,12 @@ class PricesController extends \BaseController {
 	{
 		$items = Item::all();
 		$clients = Client::all();
+		if (! Entrust::can('create_pricing') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('prices.create', compact('items','clients'));
+	}
 	}
 
 	/**
@@ -59,8 +70,13 @@ class PricesController extends \BaseController {
 	public function show($id)
 	{
 		$price = Price::findOrFail($id);
-
+        
+        if (! Entrust::can('view_pricing') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('prices.show', compact('price'));
+	}
 	}
 
 	/**
@@ -75,7 +91,12 @@ class PricesController extends \BaseController {
 		$items = Item::all();
 		$clients = Client::all();
 
+        if (! Entrust::can('update_pricing') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('prices.edit', compact('price','items','clients'));
+	}
 	}
 
 	/**
@@ -95,7 +116,7 @@ class PricesController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-		if (! Entrust::can('update_items') ) // Checks the current user
+		if (! Entrust::can('update_pricing') ) // Checks the current user
         {
 
 		$client_id = Input::get('client');		
@@ -156,7 +177,12 @@ class PricesController extends \BaseController {
 	{
 		Price::destroy($id);
 
+        if (! Entrust::can('delete_pricing') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return Redirect::route('prices.index')->withDeleteMessage('Client Discount successfully deleted!');
+	}
 	}
 
 }

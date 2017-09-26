@@ -291,3 +291,11 @@ Route::filter('manage_leavetypes', function()
     }
 });
 
+Route::filter('create_item', function()
+{
+    if (! Entrust::can('create_item') ) // Checks the current user
+    {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+    }
+});
+

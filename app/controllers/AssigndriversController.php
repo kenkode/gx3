@@ -20,7 +20,12 @@ class AssigndriversController extends \BaseController {
            ->get();
 
 
+        if (! Entrust::can('view_assigned_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('assigndrivers.index', compact('assigndrivers'));
+	}
 	}
 
 	/**
@@ -39,7 +44,13 @@ class AssigndriversController extends \BaseController {
 
         $vehicles = Vehicle::all();
 
+        if (! Entrust::can('assign_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('assigndrivers.create', compact('drivers','vehicles'));
+	}
 	}
 
 	/**
@@ -90,7 +101,12 @@ class AssigndriversController extends \BaseController {
            ->where('assigndrivers.id',$id)
            ->first();
 
+    if (! Entrust::can('view_assigned_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 	return View::make('assigndrivers.show', compact('drivers'));
+    }
 	}
 
 	/**
@@ -110,7 +126,13 @@ class AssigndriversController extends \BaseController {
 
         $vehicles = Vehicle::all();
 
+        if (! Entrust::can('update_assigned_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('assigndrivers.edit', compact('drivers','vehicles','assigndriver'));
+	}
 
 		/*return View::make('drivers.edit', compact('driver'));*/
 	}
@@ -160,7 +182,12 @@ class AssigndriversController extends \BaseController {
 	{
 		Assigndriver::destroy($id);
 
+        if (! Entrust::can('remove_assigned_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return Redirect::route('assigndrivers.index');
+	}
 	}
 
 }

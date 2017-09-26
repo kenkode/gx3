@@ -11,9 +11,9 @@
                         <a href="{{ URL::to('users') }}"><i class="fa fa-user fa-fw"></i> System Users</a>
                     </li>
 
-                    <!-- <li>
+                    <li>
                         <a href="{{ URL::to('roles') }}"><i class="fa fa-bookmark fa-fw"></i> System Roles</a>
-                    </li> -->
+                    </li>
 
                     
 <!--

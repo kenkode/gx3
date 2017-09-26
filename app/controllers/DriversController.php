@@ -11,7 +11,13 @@ class DriversController extends \BaseController {
 	{
 		$drivers = Driver::all();
 
+		if (! Entrust::can('view_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('drivers.index', compact('drivers'));
+	}
 	}
 
 	/**
@@ -21,7 +27,12 @@ class DriversController extends \BaseController {
 	 */
 	public function create()
 	{
+		if (! Entrust::can('create_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('drivers.create');
+	}
 	}
 
 	/**
@@ -62,7 +73,12 @@ class DriversController extends \BaseController {
 	{
 		$driver = Driver::findOrFail($id);
 
+        if (! Entrust::can('view_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('drivers.show', compact('driver'));
+	}
 	}
 
 	/**
@@ -75,7 +91,12 @@ class DriversController extends \BaseController {
 	{
 		$driver = Driver::find($id);
 
+        if (! Entrust::can('update_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('drivers.edit', compact('driver'));
+	}
 	}
 
 	/**
@@ -116,7 +137,12 @@ class DriversController extends \BaseController {
 	{
 		Driver::destroy($id);
 
+        if (! Entrust::can('delete_driver') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return Redirect::route('drivers.index');
+	}
 	}
 
 }

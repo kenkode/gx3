@@ -75,7 +75,7 @@ $(document).ready(function() {
             <option> ..... select sale item....</option>
                 @foreach($items as $item)
                 
-                    <option value="{{$item->id}}">{{$item->name}}</option>
+                    <option value="{{$item->id}}">{{$item->item_make}}</option>
                     
                 @endforeach
             </select>

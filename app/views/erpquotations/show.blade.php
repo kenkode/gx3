@@ -201,21 +201,32 @@ $(document).ready(function(){
             <span class="glyphicon glyphicon-file"></span>&nbsp; View Quotation
         </a>&emsp;
 
+        @if(Entrust::can('generate_invoice') ) 
+       
         <a href="{{URL::to('erpReports/invoice/'.$order->id)}}" class="lnk btn btn-primary btn-sm" target="_blank">
             <span class="glyphicon glyphicon-file"></span>&nbsp; Generate Invoice
         </a>&emsp;|&emsp;    
+        @endif
 
+        @if(Entrust::can('approve_quotation') ) 
         <a href="#commentModal" role="button" id="approveBtn" class="lnk btn btn-success btn-sm action_lnk" data-toggle="modal">
             <span class="glyphicon glyphicon-ok"></span>&nbsp; Approve
         </a>&emsp;
-
+        @endif
+   
+        @if(Entrust::can('reject_quotation') ) 
         <a href="#commentModal" id="rejectBtn" role="button" class="lnk btn btn-danger btn-sm action_lnk" data-toggle="modal">
             <span class="glyphicon glyphicon-remove"></span>&nbsp; Reject
         </a>&emsp;|&emsp;
 
+        @endif
+
+        @if(Entrust::can('edit_quotation') ) 
         <a href="{{URL::to('erpquotations/edit/'.$order->id)}}" class="lnk btn btn-primary btn-sm edit_lnk">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit Quotation
         </a>&emsp;
+        @endif
+
         <a href="#myModal" role="button" class="lnk btn btn-primary btn-sm mail_lnk" data-toggle="modal">
             <span class="glyphicon glyphicon-envelope"></span>&nbsp; Mail Quotation
         </a>

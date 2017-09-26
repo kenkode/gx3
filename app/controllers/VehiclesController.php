@@ -11,7 +11,13 @@ class VehiclesController extends \BaseController {
 	{
 		$vehicles = Vehicle::all();
 
+		if (! Entrust::can('view_vehicle') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('vehicles.index', compact('vehicles'));
+	}
 	}
 
 	/**
@@ -21,7 +27,12 @@ class VehiclesController extends \BaseController {
 	 */
 	public function create()
 	{
+		if (! Entrust::can('create_vehicle') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('vehicles.create');
+	}
 	}
 
 	/**
@@ -60,7 +71,12 @@ class VehiclesController extends \BaseController {
 	{
 		$vehicle = Vehicle::findOrFail($id);
 
+        if (! Entrust::can('view_vehicle') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('vehicles.show', compact('vehicle'));
+	}
 	}
 
 	/**
@@ -73,7 +89,12 @@ class VehiclesController extends \BaseController {
 	{
 		$vehicle = Vehicle::find($id);
 
+        if (! Entrust::can('update_vehicle') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('vehicles.edit', compact('vehicle'));
+	}
 	}
 
 	/**
@@ -112,7 +133,13 @@ class VehiclesController extends \BaseController {
 	{
 		Vehicle::destroy($id);
 
+		if (! Entrust::can('delete_vehicle') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return Redirect::route('vehicles.index');
+	}
 	}
 
 }

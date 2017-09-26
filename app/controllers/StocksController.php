@@ -17,7 +17,12 @@ class StocksController extends \BaseController {
          ->join('items', 'stocks.item_id', '=', 'items.id')
          ->get();
 
+        if (! Entrust::can('view_stock') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('stocks.index', compact('stocks', 'items','stock_in'));
+	}
 	}
 
 	/**
@@ -30,7 +35,12 @@ class StocksController extends \BaseController {
 		$items = Item::all();
 		$locations = Location::all();
 
+        if (! Entrust::can('receive_stock') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('stocks.create', compact('items', 'locations'));
+	}
 	}
 
 	/**
@@ -78,8 +88,13 @@ class StocksController extends \BaseController {
 	{
 		$stock = Stock::findOrFail($id);
 
+        if (! Entrust::can('view_stock') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('stocks.show', compact('stock'));
 	}
+    }
 
 	/**
 	 * Show the form for editing the specified stock.

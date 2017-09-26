@@ -11,7 +11,13 @@ class ItemsController extends \BaseController {
 	{
 		$items = Item::all();
 
+		if (! Entrust::can('view_item') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('items.index', compact('items'));
+	    }
 	}
 
 	/**
@@ -21,7 +27,12 @@ class ItemsController extends \BaseController {
 	 */
 	public function create()
 	{
+		if (! Entrust::can('create_item') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('items.create');
+	    }
 	}
 
 	/**
@@ -64,7 +75,13 @@ class ItemsController extends \BaseController {
 	{
 		$item = Item::findOrFail($id);
 
+		if (! Entrust::can('view_item') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('items.show', compact('item'));
+	}
 	}
 
 	/**
@@ -77,7 +94,13 @@ class ItemsController extends \BaseController {
 	{
 		$item = Item::find($id);
 
+		if (! Entrust::can('update_item') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return View::make('items.edit', compact('item'));
+	}
 	}
 
 	/**
@@ -97,7 +120,7 @@ class ItemsController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-		if (! Entrust::can('update_items') ) // Checks the current user
+		if (! Entrust::can('update_item') ) // Checks the current user
         {
 
         $name = Input::get('name');
@@ -183,7 +206,13 @@ class ItemsController extends \BaseController {
 	{
 		Item::destroy($id);
 
+		if (! Entrust::can('delete_item') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
 		return Redirect::route('items.index')->withDeleteMessage('Item successfully deleted!');
+	}
 	}
 
 	public function code($id)

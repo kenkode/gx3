@@ -11,7 +11,12 @@ class LocationsController extends \BaseController {
 	{
 		$locations = Location::all();
 
+        if (! Entrust::can('view_store') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('locations.index', compact('locations'));
+	}
 	}
 
 	/**
@@ -21,7 +26,12 @@ class LocationsController extends \BaseController {
 	 */
 	public function create()
 	{
+		if (! Entrust::can('create_store') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('locations.create');
+	}
 	}
 
 	/**
@@ -57,7 +67,12 @@ class LocationsController extends \BaseController {
 	{
 		$location = Location::findOrFail($id);
 
+        if (! Entrust::can('view_store') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('locations.show', compact('location'));
+	}
 	}
 
 	/**
@@ -70,7 +85,12 @@ class LocationsController extends \BaseController {
 	{
 		$location = Location::find($id);
 
+        if (! Entrust::can('update_store') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('locations.edit', compact('location'));
+	}
 	}
 
 	/**
@@ -109,7 +129,12 @@ class LocationsController extends \BaseController {
 		Location::destroy($id);
 
 
+        if (! Entrust::can('delete_store') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return Redirect::route('locations.index')->withFlashMessage('Store has been successfully removed!');
+	}
 
 	}
 

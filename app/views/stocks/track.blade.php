@@ -101,10 +101,11 @@
     	@endif
 
     	<div class="panel panel-default">
+            @if (Entrust::can('lease_item') ) 
     		<div class="panel-heading">
     			<a class="btn btn-info btn-sm" href="#leaseModal" data-toggle="modal">Lease Item </a> &emsp;
     		</div>
-
+            @endif
     		<div class="panel-body">
     			<table id="users" class="table table-condensed table-bordered table-responsive table-hover">
     				<thead>

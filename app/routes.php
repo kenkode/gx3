@@ -46,7 +46,7 @@ Route::get('/dashboard', function()
           //$employees = Employee::all();
            //return View::make('dashboard', compact('employees'));
 
-return Redirect::to('erpmgmt');
+return View::make('erpmgmt');
 
         }
        
@@ -1466,10 +1466,17 @@ Route::post('payrollReports/nhifReturns', 'ReportsController@nhifReturns');
 *##########################ERP REPORTS#######################################
 */
 
-Route::get('erpReports', function(){
 
+Route::get('erpReports', function(){
+if (! Entrust::can('view_erp_reports') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
     return View::make('erpreports.erpReports');
+  }
 });
+
+
 
 Route::get('erpReports/clients', 'ErpReportsController@clients');
 Route::get('erpReports/selectClientsPeriod', 'ErpReportsController@selectClientsPeriod');
@@ -2244,7 +2251,13 @@ Route::get('salesorders', function(){
   $items = Item::all();
   $locations = Location::all();
 
+  if (! Entrust::can('view_sale_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
   return View::make('erporders.index', compact('items', 'locations', 'orders'));
+}
 });
 
 
@@ -2255,8 +2268,12 @@ Route::get('purchaseorders', function(){
   $items = Item::all();
   $locations = Location::all();
 
-
+if (! Entrust::can('view_purchase_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   return View::make('erppurchases.index', compact('items', 'locations', 'purchases'));
+}
 });
 
 
@@ -2269,7 +2286,13 @@ Route::get('quotationorders', function(){
   $items = Item::all();
   $locations = Location::all();
 
+  if (! Entrust::can('view_quotation') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
   return View::make('erpquotations.index', compact('items', 'locations', 'quotations'));
+}
 });
 
 
@@ -2282,7 +2305,12 @@ Route::get('salesorders/create', function(){
 
   $clients = Client::all();
 
+  if (! Entrust::can('create_sale_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   return View::make('erporders.create', compact('items', 'locations', 'order_number', 'clients'));
+}
 });
 
 
@@ -2296,7 +2324,12 @@ Route::get('purchaseorders/create', function(){
 
   $clients = Client::all();
 
+if (! Entrust::can('create_purchase_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   return View::make('erppurchases.create', compact('items', 'locations', 'order_number', 'clients', 'erporders'));
+}
 });
 
 
@@ -2309,7 +2342,12 @@ Route::get('quotationorders/create', function(){
 
   $clients = Client::all();
 
+if (! Entrust::can('create_quotation') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   return View::make('erpquotations.create', compact('items', 'locations', 'order_number', 'clients'));
+}
 });
 
 Route::post('erporders/create', function(){
@@ -2592,7 +2630,12 @@ Route::get('stock/tracking', function(){
   $location = Location::all();
   $leased = ItemTracker::all();
 
+  if (! Entrust::can('track_stock') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   return View::make('stocks/track', compact('stocks', 'items', 'clients', 'location', 'leased'));
+}
 });
 
 Route::get('confirmstock/{id}/{name}', function($id,$name){
@@ -2895,12 +2938,16 @@ Route::get('erporders/cancel/{id}', function($id){
 
   $order = Erporder::findorfail($id);
 
-
+if (! Entrust::can('cancel_sale_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 
   $order->status = 'cancelled';
   $order->update();
 
   return Redirect::to('salesorders');
+}
   
 });
 
@@ -2909,11 +2956,15 @@ Route::get('erporders/delivered/{id}', function($id){
 
   $order = Erporder::findorfail($id);
 
+  if (! Entrust::can('approve_delivered_sale_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   $order->status = 'delivered';
   $order->update();
 
   return Redirect::to('salesorders');
-  
+  }
 });
 
 
@@ -2921,11 +2972,15 @@ Route::get('erppurchases/cancel/{id}', function($id){
 
   $order = Erporder::findorfail($id);
 
+  if (! Entrust::can('cancel_purchase_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   $order->status = 'cancelled';
   $order->update();
 
   return Redirect::to('purchaseorders');
-  
+  }
 });
 
 
@@ -2934,11 +2989,15 @@ Route::get('erppurchases/delivered/{id}', function($id){
 
   $order = Erporder::findorfail($id);
 
+  if (! Entrust::can('approve_delivered_purchase_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   $order->status = 'delivered';
   $order->update();
 
   return Redirect::to('purchaseorders');
-  
+  }
 });
 
 
@@ -2975,8 +3034,12 @@ Route::get('erporders/show/{id}', function($id){
   $driver = Driver::all();
     //return $driver;
 
+  if (! Entrust::can('view_sale_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   return View::make('erporders.show', compact('order', 'driver', 'orders'));
-  
+  }
 });
 
 
@@ -2985,7 +3048,12 @@ Route::get('erppurchases/show/{id}', function($id){
 
   $order = Erporder::findorfail($id);
 
+  if (! Entrust::can('view_purchase_order') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
   return View::make('erppurchases.show', compact('order'));
+}
   
 });
 
@@ -3008,7 +3076,13 @@ Route::get('erpquotations/show/{id}', function($id){
 
   $order = Erporder::findorfail($id);
 
+  if (! Entrust::can('view_quotation') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+
   return View::make('erpquotations.show', compact('order'));
+}
   
 });
 

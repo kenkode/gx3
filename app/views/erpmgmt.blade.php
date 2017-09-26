@@ -1,6 +1,11 @@
 @extends('layouts.erp')
 @section('content')
 <br><br/>
+
+@if (Session::get('notice'))
+            <div class="alert alert-info">{{ Session::get('notice') }}</div>
+        @endif
+
 <div class="row">
                       <div class="col-md-2">
                         <a href="{{ URL::to('items/create')}}"><img border="0" src="{{asset('images/Add-icon.png')}}" alt="New Item" width="75">
@@ -59,6 +64,8 @@
 
 
 <br><br>
+
+
 <hr>
 <div class="row">
                           

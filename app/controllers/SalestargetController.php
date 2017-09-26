@@ -11,7 +11,12 @@ class SalestargetController extends \BaseController {
 	{
 		$salestargets = SalesTarget::all();
 
+        if (! Entrust::can('view_sale_target') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('salestargets.index', compact('salestargets'));
+	}
 	}
 
 	/**
@@ -21,7 +26,12 @@ class SalestargetController extends \BaseController {
 	 */
 	public function create()
 	{
+		if (! Entrust::can('create_sale_target') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('salestargets.create');
+	}
 	}
 
 	/**
@@ -61,7 +71,12 @@ class SalestargetController extends \BaseController {
 	{
 		$salestarget = SalesTarget::findOrFail($id);
 
+        if (! Entrust::can('view_sale_target') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('salestargets.show', compact('salestarget'));
+	}
 	}
 
 	/**
@@ -74,7 +89,12 @@ class SalestargetController extends \BaseController {
 	{
 		$salestarget = SalesTarget::find($id);
 
+        if (! Entrust::can('update_sale_target') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('salestargets.edit', compact('salestarget'));
+	}
 	}
 
 	/**
@@ -112,7 +132,12 @@ class SalestargetController extends \BaseController {
 	{
 		SalesTarget::destroy($id);
 
+        if (! Entrust::can('delete_sale_target') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return Redirect::route('salestargets.index')->withDeleteMessage('Target successfully removed!');
+	}
 	}
 
 }

@@ -11,7 +11,12 @@ class TaxController extends \BaseController {
 	{
 		$taxes = Tax::all();
 
+        if (! Entrust::can('view_tax') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('taxes.index', compact('taxes'));
+	}
 	}
 
 	/**
@@ -21,7 +26,12 @@ class TaxController extends \BaseController {
 	 */
 	public function create()
 	{
+		if (! Entrust::can('create_tax') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('taxes.create');
+	}
 	}
 
 	/**
@@ -59,7 +69,12 @@ class TaxController extends \BaseController {
 	{
 		$tax = Tax::findOrFail($id);
 
+        if (! Entrust::can('view_tax') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('taxes.show', compact('tax'));
+	}
 	}
 
 	/**
@@ -72,7 +87,12 @@ class TaxController extends \BaseController {
 	{
 		$tax = Tax::find($id);
 
+        if (! Entrust::can('update_tax') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('taxes.edit', compact('tax'));
+	}
 	}
 
 	/**
@@ -109,7 +129,12 @@ class TaxController extends \BaseController {
 	{
 		Tax::destroy($id);
 
+        if (! Entrust::can('delete_tax') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return Redirect::route('taxes.index')->withDeleteMessage('Tax successfully deleted!');
+	}
 	}
 
 }

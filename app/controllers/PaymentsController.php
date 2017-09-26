@@ -27,7 +27,12 @@ class PaymentsController extends \BaseController {
 		$payments = Payment::all();
 		
 
+        if (! Entrust::can('view_payments') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('payments.index', compact('erporderitems','erporders','paymentmethods','payments'));
+	}
 	}
 
 	/**
@@ -46,7 +51,12 @@ class PaymentsController extends \BaseController {
 		         ->select( DB::raw('DISTINCT(name),clients.id') )
 		         ->get();
 		
+		if (! Entrust::can('create_payments') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('payments.create',compact('erporders','clients','erporderitems','paymentmethods','accounts'));
+	}
 	}
 
 	/**
@@ -244,7 +254,12 @@ class PaymentsController extends \BaseController {
 		$erporderitem = Erporderitem::findOrFail($id);
 		$erporder = Erporder::findOrFail($id);
 
+        if (! Entrust::can('view_payments') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('payments.show', compact('payment','erporderitem','erporder'));
+	}
 	}
 
 	/**
@@ -259,7 +274,12 @@ class PaymentsController extends \BaseController {
 		$erporders = Erporder::all();
 		$erporderitems = Erporderitem::all();
 
+        if (! Entrust::can('update_payments') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('payments.edit', compact('payment','erporders','erporderitems'));
+	}
 	}
 
 	/**
@@ -300,7 +320,12 @@ class PaymentsController extends \BaseController {
 	{
 		Payment::destroy($id);
 
+        if (! Entrust::can('delete_payments') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return Redirect::route('payments.index')->withDeleteMessage('Payment successfully deleted!');
+	}
 	}
 
 
@@ -318,7 +343,12 @@ class PaymentsController extends \BaseController {
 
 							//return $payments;
 
+    if (! Entrust::can('view_daily_payments') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('payments.dailyPayments', compact('payments'));
+	}
 	}
 
 }
