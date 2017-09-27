@@ -1718,6 +1718,7 @@ return array(
     'Patchwork\\Utf8\\BestFit' => $vendorDir . '/patchwork/utf8/src/Patchwork/Utf8/BestFit.php',
     'Patchwork\\Utf8\\Bootup' => $vendorDir . '/patchwork/utf8/src/Patchwork/Utf8/Bootup.php',
     'Patchwork\\Utf8\\WindowsStreamWrapper' => $vendorDir . '/patchwork/utf8/src/Patchwork/Utf8/WindowsStreamWrapper.php',
+    'PayableController' => $baseDir . '/app/controllers/PayableController.php',
     'Payment' => $baseDir . '/app/models/Payment.php',
     'Paymentmethod' => $baseDir . '/app/models/Paymentmethod.php',
     'PaymentmethodsController' => $baseDir . '/app/controllers/PaymentmethodsController.php',

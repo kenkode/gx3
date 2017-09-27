@@ -37,11 +37,11 @@ $(document).ready(function(){
 @section('content')
 
 <br><div class="row">
-	<div class="col-lg-12">
+    <div class="col-lg-12">
   <h4><font color='green'>Sales Order : {{$order->order_number}} &emsp;| &emsp;&emsp;Client: {{$order->client->name}}  &emsp; |&emsp; Date: {{$order->date}} &emsp; |&emsp; Status: {{$order->status}} </font> </h4>
 
 <hr>
-</div>	
+</div>  
 </div>
  
 <div class="row">
@@ -63,15 +63,17 @@ $(document).ready(function(){
                 @else
                     <button type="submit" class="btn btn-primary input-sm"><i class="fa fa-file fa-fw"></i> Delivery Note/Receipt</button>
                 @endif
-                <button type="submit" class="btn btn-primary input-sm"><i class="fa fa-file fa-fw"></i> Invoice</button>
+                 <a href="{{URL::to('erpReports/kenya/'.$order->id)}}" class="lnk btn btn-primary btn-sm" target="_blank">
+            <span class="glyphicon glyphicon-file"></span>&nbsp; Generate Invoice
+        </a>
             </div>
         </form>
     </div>
 </div>
 
 <div class="row">
-	<div class="col-lg-12">
-		@if ($errors->has())
+    <div class="col-lg-12">
+        @if ($errors->has())
         <div class="alert alert-danger">
             @foreach ($errors->all() as $error)
                 {{ $error }}<br>        
@@ -98,11 +100,13 @@ $(document).ready(function(){
 
    
         <?php $total = 0; ?>
+
         @foreach($order->erporderitems as $orderitem)
 
             <?php
-
-            $amount = $orderitem['price'] * $orderitem['quantity'];
+            $discount_amount = $orderitem['discount_amount'];            
+            $total_amount = $orderitem['price'] * $orderitem['quantity'];
+            $amount = $orderitem['price'] * $orderitem['quantity']-$discount_amount * $orderitem['quantity'];
             /*$total_amount = $amount * $orderitem['duration'];*/
             $total = $total + $amount;
             ?>
@@ -111,7 +115,7 @@ $(document).ready(function(){
             <td>{{$orderitem->item->name}}</td>
             <td>{{$orderitem['quantity']}}</td>
             <td>{{asMoney($orderitem['price'])}}</td>
-            <td>{{ asMOney($orders->discount_amount) }}</td>
+            <td id="tid">{{asMoney($discount_amount * $orderitem['quantity'])}}</td>
             <!-- <td>{{$amount}}</td>
             <td>{{$orderitem['duration']}}</td> -->
             <td>{{asMoney($amount) }}</td>
@@ -134,7 +138,7 @@ $(document).ready(function(){
     </tbody>
         
     </table>
-		
+        
 
   </div>
 

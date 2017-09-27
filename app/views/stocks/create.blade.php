@@ -11,28 +11,81 @@ $(document).ready(function() {
         { option: $(this).val() }, 
         function(data) {
             /*console.log('hi');*/
-                $('#quantity').val(data);
+                $('#sup').val(data);
             });
         });
    });
 </script>
+
+ {{ HTML::style('jquery-ui-1.11.4.custom/jquery-ui.css') }}
+{ HTML::script('jquery-ui-1.11.4.custom/jquery-ui.js') }}
+
+<script type="text/javascript">
+$(document).ready(function(){
+$('#').hide();
+
+$('#item').change(function(){
+if($(this).val()){
+    $('#').show();
+}else if($(this).val() == "EXPENSE"){
+    $('#expensecategory').show();
+    $('#assetcategory').hide();
+    $('#liabilitycategory').hide();
+    $('#incomecategory').hide();
+    $('#assetcat').val('');
+    $('#liabilitycat').val('');
+    $('#incomecat').val('');
+}else if($(this).val() == "LIABILITY"){
+    $('#liabilitycategory').show();
+    $('#assetcategory').hide();
+    $('#expensecategory').hide();
+    $('#incomecategory').hide();
+    $('#assetcat').val('');
+    $('#expensecat').val('');
+    $('#incomecat').val('');
+}else if($(this).val() == "INCOME"){
+    $('#incomecategory').show();
+    $('#assetcategory').hide();
+    $('#expensecategory').hide();
+    $('#liabilitycategory').hide();
+    $('#assetcat').val('');
+    $('#expensecat').val('');
+    $('#liabilitycat').val('');
+}else{
+    $('#assetcategory').hide();
+    $('#expensecategory').hide();
+    $('#liabilitycategory').hide(); 
+    $('#incomecategory').hide(); 
+    $('#assetcat').val('');
+    $('#expensecat').val('');
+    $('#liabilitycat').val('');
+    $('#incomecat').val('');
+}
+
+});
+});
+</script>
+
+
+
+
 @section('content')
 
 <br><div class="row">
-	<div class="col-lg-12">
+    <div class="col-lg-12">
   <h3>Receive Stock</h3>
 
 <hr>
-</div>	
+</div>  
 </div>
 
 
 <div class="row">
-	<div class="col-lg-5">
+    <div class="col-lg-5">
 
     
-		
-		 @if ($errors->has())
+        
+         @if ($errors->has())
         <div class="alert alert-danger">
             @foreach ($errors->all() as $error)
                 {{ $error }}<br>        
@@ -40,7 +93,7 @@ $(document).ready(function() {
         </div>
         @endif
 
-		 <form method="POST" action="{{{ URL::to('stocks') }}}" accept-charset="UTF-8">
+         <form method="POST" action="{{{ URL::to('stocks') }}}" accept-charset="UTF-8">
         <font color="red"><i>All fields marked with * are mandatory</i></font>
 
          <div class="form-group">
@@ -54,15 +107,33 @@ $(document).ready(function() {
    
     <fieldset>
         <div class="form-group">
-            <label for="username">Item <span style="color:red">*</span> :</label>
+            <label for="username">Supplier <span style="color:red">*</span> :</label>
             <select name="item" class="form-control" id="item" required>
-            <option> select item ... </option>
-                @foreach($items as $item)
-                <option style="color:black" value="{{$item->id}}">{{$item->item_make}}</option>
-                @endforeach
-                
+            <option> select Supplier ... </option>
+                @foreach($clients as $client)
+                @if($client->type == 'Supplier')
+                <option value="{{$client->id}}">{{$client->name}}</option>
+                @endif
+                @endforeach 
             </select>
         </div>
+
+
+     <div class="form-group">
+            <label for="username">Stock To receive <span style="color:red">*</span> :</label>
+            <input type="text" name="order" id="sup" class="form-control" required>
+        </div>
+
+        <!--<div class="form-group" id="sup">
+            <label for="username">Select Stock to recieve</label><span style="color:red">*</span> :
+           <select name="order" id="sup" class="form-control" required>
+                           <option></option>
+                           <option>..................................Select Stock....................................</option>
+                          
+                            <option value=""></option>
+                          
+                        </select>
+                </div>-->
 
         <div class="form-group">
             <label for="username">Store <span style="color:red">*</span> :</label>
@@ -89,7 +160,7 @@ $(document).ready(function() {
 
     </fieldset>
 </form>
-		
+        
 
   </div>
 

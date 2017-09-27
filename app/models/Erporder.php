@@ -78,4 +78,10 @@ class Erporder extends \Eloquent {
 		
 		return $user->username;
 	}
+
+
+	//public static function getsupplier($id, $client_id){
+		//return DB::table('')
+
+	//}
 }

@@ -20,4 +20,11 @@ class Erporderitem extends \Eloquent {
 		return $this->belongsTo('Item');
 	}
 
+	public static function getInvoice($id){
+	        if($id > 0){
+			$erporderitem = Erporderitem::find($id);
+	        return $erporderitem->status;
+	        }
+	}
+
 }

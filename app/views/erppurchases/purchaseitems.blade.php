@@ -49,9 +49,7 @@ $(document).ready(function(){
             <option></option>
             <option> ..... select sale item....</option>
                 @foreach($items as $item)
-                
-                    <option value="{{$item->id}}">{{$item->name}}</option>
-                    
+                    <option value="{{$item->id}}">{{$item->item_make}}</option>
                 @endforeach
             </select>
         </div>
@@ -98,7 +96,7 @@ $(document).ready(function(){
 
     <thead>
         <th>Index</th>
-        <th>Item</th>
+        <th>Item</th>-->
         <th>Quantity</th>
         <th>Price</th>
         <!-- <th>Amount</th> -->

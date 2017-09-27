@@ -2071,6 +2071,7 @@ class ComposerStaticInit565ae4454a3bba9b74acce07c2adc4fb
         'Patchwork\\Utf8\\BestFit' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/Utf8/BestFit.php',
         'Patchwork\\Utf8\\Bootup' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/Utf8/Bootup.php',
         'Patchwork\\Utf8\\WindowsStreamWrapper' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/Utf8/WindowsStreamWrapper.php',
+        'PayableController' => __DIR__ . '/../..' . '/app/controllers/PayableController.php',
         'Payment' => __DIR__ . '/../..' . '/app/models/Payment.php',
         'Paymentmethod' => __DIR__ . '/../..' . '/app/models/Paymentmethod.php',
         'PaymentmethodsController' => __DIR__ . '/../..' . '/app/controllers/PaymentmethodsController.php',

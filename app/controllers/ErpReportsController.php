@@ -19,6 +19,41 @@ class ErpReportsController extends \BaseController {
         
     }
 
+
+public function kenya($id){
+
+       $orders = DB::table('erporders')
+                ->join('erporderitems', 'erporders.id', '=', 'erporderitems.erporder_id')
+                ->join('items', 'erporderitems.item_id', '=', 'items.id')
+                ->join('clients', 'erporders.client_id', '=', 'clients.id')
+                ->where('erporders.id','=',$id)
+                ->select('clients.name as client','items.item_make as item','quantity','clients.address as address',
+                  'clients.phone as phone','clients.email as email','erporders.id as id',
+                  'discount_amount','erporders.order_number as order_number','price','description')
+                ->first();
+
+        $txorders = DB::table('tax_orders')
+                ->join('erporders', 'tax_orders.order_number', '=', 'erporders.order_number')
+                ->join('taxes', 'tax_orders.tax_id', '=', 'taxes.id')
+                ->where('erporders.id','=',$id)
+                ->get();
+
+        $count = DB::table('tax_orders')->count();
+
+        $erporder = Erporder::findorfail($id);
+
+
+        $organization = Organization::find(1);
+
+        $pdf = PDF::loadView('erpreports.salesdelivery', compact('orders','erporder','txorders','count' ,'organization'))->setPaper('a4');
+    
+        return $pdf->stream('quotation.pdf');
+        
+    }
+
+
+
+
     public function items(){
 
         $from = Input::get("from");

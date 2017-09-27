@@ -70,6 +70,10 @@ Route::get('mail', function(){
 
 });
 
+
+
+Route::resource('payable', 'PayableController');
+
 // Confide routes
 Route::resource('users', 'UsersController');
 Route::get('users/create', 'UsersController@create');
@@ -1995,7 +1999,7 @@ Route::get('css/reset/{id}', 'MembersController@reset');
 
 
 
-
+Route::get('erpReports/kenya/{id}', 'ErpReportsController@kenya');
 
 
 
@@ -3428,11 +3432,21 @@ Route::get('api/getmodel', function(){
     return $vehicle->model;
 });
 
-// Route::get('api/getpurchased', function(){
-//     $id = Input::get('option');
-//     $erporderitems = Erporderitem::find($id);
-//     return $erporderitems->quantity;
-// });
+
+
+ Route::get('api/getpurchased', function(){
+     $id = Input::get('option');
+     $erporderitems = Erporderitem::find($id);
+    return $erporderitems->item_id;
+});
+
+
+Route::get('api/dropdown', function(){
+    $id = Input::get('option');
+    $erporderitems = Erporder::where('client_id',$id)->where('status','new')->get();
+    return $erporderitems->lists('order_number', 'id');
+});
+
 
 Route::get('api/getmax', function(){
     $id = Input::get('option');

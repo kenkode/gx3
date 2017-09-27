@@ -14,18 +14,9 @@
   </div>
 </div>
 
-@if (Session::get('notice'))
-            <div class="alert alert-info">{{ Session::get('notice') }}</div>
-        @endif
-
 <div class="row"> 
   <!-- QUICK LINK BUTTONS -->
-  <div class="col-lg-12">
-    <a href="{{ URL::to('payments/create') }}" class="btn btn-info btn-sm"><i class="fa fa-plus fa-fw"></i> New Payment</a>&emsp;
-    <!-- <a href="" class="btn btn-warning btn-sm"> Run Depreciation</a>&emsp; -->
-    <a href="{{ URL::to('daily_payments/today') }}" class="btn btn-info btn-sm"> Daily Payment</a>&emsp;
-    <hr>
-  </div><!-- ./END -->
+  
 
   <!-- FIXED ASSETS BODY SECTION -->
   <div class="col-lg-12">
@@ -38,15 +29,24 @@
 
     <!-- TAB CONTENT -->
     <div class="tab-content">
+
       <!-- REGISTERED ASSETS -->
       <div id="registeredAssets" class="tab-pane fade in active">
         <table class="table table-condensed table-bordered table-responsive table-hover users">
+
           <thead>
+            <div class="col-lg-12">
+    <a href="{{ URL::to('payments/create') }}" class="btn btn-info btn-sm"><i class="fa fa-plus fa-fw"></i> New Receivable Payment</a>&emsp;
+    <!-- <a href="" class="btn btn-warning btn-sm"> Run Depreciation</a>&emsp; -->
+    <a href="{{ URL::to('daily_payments/today') }}" class="btn btn-info btn-sm"> Daily Receivable Payment</a>&emsp;
+    <hr>
+  </div><!-- ./END -->
             <tr>
               <th>#</th>
               <th>Clent</th>
               <th>Amount</th>
               <th>Date</th>
+              <th>Status</th>
               <th></th>
             </tr>
           </thead>
@@ -60,6 +60,7 @@
               <td>{{ $payment->client->name }}</td>
               <td align="right">{{ asMoney($payment->amount_paid) }}</td>
               <td>{{ date("d-M-Y",strtotime($payment->date)) }}</td>
+              <td></td>
               
               <td>
                 <div class="btn-group">
@@ -90,6 +91,12 @@
         <!-- SOLD/DISPOSED ASSETS -->
         <table class="table table-condensed table-bordered table-responsive table-hover users">
           <thead>
+            <div class="col-lg-12">
+    <a href="{{ URL::to('payable/create') }}" class="btn btn-info btn-sm"><i class="fa fa-plus fa-fw"></i> New Payable Payment</a>&emsp;
+    <!-- <a href="" class="btn btn-warning btn-sm"> Run Depreciation</a>&emsp; -->
+    <a href="{{ URL::to('daily_payments/today') }}" class="btn btn-info btn-sm"> Daily Payable Payment</a>&emsp;
+    <hr>
+  </div><!-- ./END -->
             <tr>
               <th>#</th>
               <th>Clent</th>
