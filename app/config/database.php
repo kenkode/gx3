@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'gx3',
+			'database'  => 'gas3',
 			'username'  => 'root',
 			'password'  => '',
 			'port' => '3306',
