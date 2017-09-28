@@ -21,6 +21,7 @@
 						
 						<th>Username</th>
 						<th>Email</th>
+            <th>Role</th>
 						<th>created on</th>
 						<th>confirmed</th>
 						<th></th>
@@ -31,6 +32,7 @@
                			
                			<td>{{ $user->username }}</td>
                			<td>{{ $user->email }}</td>
+                    <td>{{ Role::getRole($user->id) }}</td>
                			<td>{{ $user->created_at }}</td>
                			<?php if($user->confirmed){ ?>
                			<td> confirmed </td>
