@@ -48,9 +48,9 @@
           <td>{{$leaveapplication->employee->first_name." ".$leaveapplication->employee->last_name." ".$leaveapplication->employee->middle_name}}</td>
           <td>{{$leaveapplication->leavetype->name}}</td>
           <td>{{$leaveapplication->application_date}}</td>
-           <td>{{$leaveapplication->applied_start_date}}</td>
-            <td>{{$leaveapplication->applied_end_date}}</td>
-            <td>{{Leaveapplication::getLeaveDays($leaveapplication->applied_end_date,$leaveapplication->applied_start_date)}}</td>
+          <td>{{$leaveapplication->applied_start_date}}</td>
+          <td>{{$leaveapplication->applied_end_date}}</td>
+          <td>{{Leaveapplication::getLeaveDays($leaveapplication->applied_end_date,$leaveapplication->applied_start_date)}}</td>
 
 <td>{{Leaveapplication::getBalanceDays($leaveapplication->employee, $leaveapplication->leavetype)}}</td>
           <td>

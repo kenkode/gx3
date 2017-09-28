@@ -156,7 +156,7 @@ img#watermark{
       <tr>
 
        <td td width='20' valign="top">{{$i}}</td>        
-        <td valign="top"> {{ $item->name }}</td>
+        <td valign="top"> {{ $item->item_make }}</td>
         <td valign="top"> {{ $item->description }}</td>
         <td valign="top" align="right"> {{ asMoney($item->purchase_price) }}</td>
         <td valign="top" align="right"> {{ asMoney($item->selling_price) }}</td>

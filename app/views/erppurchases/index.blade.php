@@ -61,7 +61,7 @@
           <td>{{ $order->client->name }}</td>
           <td>{{$order->order_number }}</td>
           <td>{{$order->date }}</td>
-
+          
           @if($order->status === "delivered")
           <td><span class="label label-success">Delivered</td>
           @elseif($order->status === "new")

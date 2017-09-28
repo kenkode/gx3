@@ -80,7 +80,7 @@
        </li> 
 
         <li>
-         <a href="{{ URL::to('erpReports/stocks') }}" target="_blank">Stock report </a>     
+         <a href="{{ URL::to('erpReports/selectStockPeriod') }}" target="_blank">Stock report </a>     
        </li> 
 
 

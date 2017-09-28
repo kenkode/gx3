@@ -238,6 +238,39 @@ Route::get('currencies/create', 'CurrenciesController@create');
 
 
 
+/* PETTY CASH ROUTES */
+Route::resource('petty_cash', 'PettyCashController');
+Route::post('petty_cash/addMoney', 'PettyCashController@addMoney');
+Route::post('petty_cash/addContribution', 'PettyCashController@addContribution');
+Route::post('petty_cash/newTransaction', 'PettyCashController@newTransaction');
+Route::post('petty_cash/commitTransaction', 'PettyCashController@commitTransaction');
+Route::get('petty_cash/transaction/{id}', 'PettyCashController@receiptTransactions');
+
+// Edit and delete petty cash items
+Route::get('petty_cash/newTransaction/remove/{count}', 'PettyCashController@removeTransactionItem');
+
+
+
+/* EXPENSE CLAIMS ROUTES */
+Route::resource('expense_claims', 'ExpenseClaimController');
+Route::get('expense_claims/newReceipt', 'ExpenseClaimController@show');
+Route::get('expense_claims/editReceipt/{id}', 'ExpenseClaimController@edit');
+Route::post('expense_claims/newItem', 'ExpenseClaimController@addReceiptItem');
+Route::get('expense_claims/newReceipt/remove/{count}', 'ExpenseClaimController@removeItem');
+Route::post('expense_claims/commitTransaction', 'ExpenseClaimController@commitTransaction');
+Route::post('expense_claims/submitClaim', 'ExpenseClaimController@submitClaim');
+Route::get('expense_claims/approveClaim/{id}', 'ExpenseClaimController@approveClaimView');
+Route::get('expense_claims/approve/{id}', 'ExpenseClaimController@approveClaim');
+Route::get('expense_claims/decline/{id}', 'ExpenseClaimController@declineClaim');
+Route::get('expense_claims/payClaim/{id}', 'ExpenseClaimController@payClaimView');
+Route::post('expense_claims/payClaim', 'ExpenseClaimController@payClaim');
+
+
+/* ASSET MANAGEMENT */
+Route::resource('assetManagement', 'AssetMgmtController');
+Route::post('assetManagement/{id}', 'AssetMgmtController@update');
+Route::get('assetManagement/{id}/depreciate', 'AssetMgmtController@depreciate');
+
 /*
 * branches routes
 */
@@ -1528,7 +1561,7 @@ Route::get('erpReports/PurchaseOrder/{id}', 'ErpReportsController@PurchaseOrder'
 
 Route::get('erpReports/locations', 'ErpReportsController@locations');
 
-Route::get('erpReports/stocks', 'ErpReportsController@stock');
+Route::post('erpReports/stocks', 'ErpReportsController@stock');
 Route::get('erpReports/selectStockPeriod', 'ErpReportsController@selectStockPeriod');
 
 

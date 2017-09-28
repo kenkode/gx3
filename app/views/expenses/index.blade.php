@@ -6,7 +6,7 @@ function asMoney($value) {
 
 ?>
 
-@extends('layouts.erp')
+@extends('layouts.accounting')
 @section('content')
 
 <br><div class="row">

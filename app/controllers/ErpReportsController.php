@@ -366,18 +366,18 @@ public function kenya($id){
 
     public function stock(){
 
-        $items = Item::all();
+    $items = Item::all();
 
-       /* $from = Input::get("from");
+        $from = Input::get("from");
         $to= Input::get("to");
 
         $items = DB::table('items')
-                    ->whereBetween('date', array(Input::get("from"), Input::get("to")))->get();*/
+                    ->whereBetween('date', array(Input::get("from"), Input::get("to")))->get();
 
 
         $organization = Organization::find(1);
 
-        $pdf = PDF::loadView('erpreports.stockReport', compact('items', 'organization'))->setPaper('a4', 'landscape');
+        $pdf = PDF::loadView('erpreports.stockReport', compact('items', 'organization','from','to'))->setPaper('a4')->setOrientation('landscape');
     
         return $pdf->stream('Stock Report.pdf');
         

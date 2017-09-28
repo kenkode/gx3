@@ -60,6 +60,11 @@ $(document).ready(function(){
             <input type="text" name="quantity" class="form-control" required>
         </div>
 
+        <div class="form-group ">
+            <label>Unit Price</label><span style="color:red">*</span> :
+            <input type="text" name="quantity" class="form-control" required>
+        </div>
+
 
         <div class="form-group ">
             
@@ -96,7 +101,7 @@ $(document).ready(function(){
 
     <thead>
         <th>Index</th>
-        <th>Item</th>-->
+        <th>Item</th>
         <th>Quantity</th>
         <th>Price</th>
         <!-- <th>Amount</th> -->

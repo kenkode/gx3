@@ -86,13 +86,14 @@ $(document).ready(function(){
     <table class="table table-condensed table-bordered table-hover" >
 
     <thead>
-        <th><input type="checkbox" id="select_all" value=""></th>
+        
         <th>Item</th>
         <th>Quantity</th>
         <th>Price</th>
         <!-- <th>Amount</th>
         <th>Duration</th> -->
         <th>Total Amount</th>
+        <th>Grand Total</th>
        
     </thead>
 
@@ -109,13 +110,14 @@ $(document).ready(function(){
             $total = $total + $amount;
             ?>
         <tr>
-            <td><input type="checkbox" class="checkbox" name="{{$orderitem->item->id}}" value=""></td>
-            <td>{{$orderitem->item->name}}</td>
+            
+            <td>{{$orderitem->item->item_make}}</td>
             <td>{{$orderitem['quantity']}}</td>
             <td>{{asMoney($orderitem['price'])}}</td>
             <!-- <td>{{$amount}}</td>
             <td>{{$orderitem['duration']}}</td> -->
             <td>{{asMoney($amount) }}</td>
+            <td></td>
             
         </tr>
 
