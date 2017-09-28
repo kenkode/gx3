@@ -51,8 +51,12 @@ $(document).ready(function(){
 
 <div class="row">
     <div class="col-lg-12">
+    @if(($order->reviewed_by != null && $order->reviewed_by != "") && $order->authorized_by == null || $order->authorized_by == "")
     <a href="{{URL::to('erpReports/PurchaseOrder/'.$order->id)}}" class="btn btn-primary"> Generate Purchase Order</a>
+    @endif
+    @if(!Entrust::can('authorize_purchase_order') || !Entrust::can('review_purchase_order'))
     <a href="{{URL::to('submitpurchaseorder/'.$order->id)}}" class="btn btn-success"> Submit For Approval</a>
+    @endif
     @if(Entrust::can('authorize_purchase_order'))
     @if(($order->reviewed_by != null || $order->reviewed_by != "") && $order->authorized_by == null || $order->authorized_by == "")
     <a href="{{URL::to('authorizepurchaseorder/'.$order->id)}}" class="btn btn-danger"> Authorize Purchase Order</a> 
