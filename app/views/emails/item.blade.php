@@ -16,7 +16,7 @@ Hello {{$name}},
 <br>
 <p>Click on the link below to approve item update</p>
 
-<p><a href="{{URL::to('approveitemupdate/'.$itemname.'/'.$size.'/'.$description.'/'.$pprice.'/'.$sprice.'/'.$sku.'/'.$tagid.'/'.$reorderlevel.'/'.$receiver.'/'.$id)}}">Approve Item Update</a></p>
+<p><a href="{{URL::to('approveitemupdate/'.$itemname.'/'.$size.'/'.$description.'/'.$pprice.'/'.$sprice.'/'.$sku.'/'.$tagid.'/'.$reorderlevel.'/'.$receiver.'/'.$confirmer.'/'.$key.'/'.$id)}}">Approve Item Update</a></p>
 <br><br>
 <p>Regards,</p>
 <p>Gas Express</p>

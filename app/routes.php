@@ -206,7 +206,7 @@ Route::get('approvepriceupdate/{client}/{item}/{discount}/{receiver}/{id}', 'Pri
 
 Route::resource('items', 'ItemsController');
 Route::get('items/edit/{id}', 'ItemsController@edit');
-Route::get('approveitemupdate/{name}/{size}/{description}/{pprice}/{sprice}/{sku}/{tagid}/{reorderlevel}/{receiver}/{id}', 'ItemsController@approveitem');
+Route::get('approveitemupdate/{name}/{size}/{description}/{pprice}/{sprice}/{sku}/{tagid}/{reorderlevel}/{receiver}/{confirmer}/{key}/{id}', 'ItemsController@approveitem');
 Route::post('items/update/{id}', 'ItemsController@update');
 Route::get('items/delete/{id}', 'ItemsController@destroy');
 Route::get('items/code/{id}', 'ItemsController@code');

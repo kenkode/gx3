@@ -120,7 +120,7 @@ class ItemsController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-		if (! Entrust::can('update_item') ) // Checks the current user
+		if (! Entrust::can('confirm_update_item') ) // Checks the current user
         {
 
         $name = Input::get('name');
@@ -150,13 +150,27 @@ class ItemsController extends \BaseController {
 		$size = $size;
 		}
 
-        $send_mail = Mail::send('emails.item', array('name' => 'Victor Kotonya', 'username' => $username,'itemname' => $name,'size' => $size,'description' => $description,'pprice' => $purchase_price,'sprice' => $selling_price,'sku' => $sku,'tagid' => $tag_id,'reorderlevel' => $reorder_level,'receiver' => $receiver_id,'id' => $id), function($message)
+		$users = DB::table('roles')
+		->join('assigned_roles', 'roles.id', '=', 'assigned_roles.role_id')
+		->join('users', 'assigned_roles.user_id', '=', 'users.id')
+		->join('permission_role', 'roles.id', '=', 'permission_role.role_id') 
+		->where("permission_id",34)->get();
+
+		$key = md5(uniqid());
+
+		foreach ($users as $user) {
+
+		$email = $user->email;
+			
+        $send_mail = Mail::send('emails.item', array('name' => $user->username, 'username' => $username,'itemname' => $name,'size' => $size,'description' => $description,'pprice' => $purchase_price,'sprice' => $selling_price,'sku' => $sku,'tagid' => $tag_id,'reorderlevel' => $reorder_level,'receiver' => $receiver_id,'confirmer' => $user->id,'key'=>$key,'id' => $id), function($message) use($email)
         {   
 		    $message->from('info@lixnet.net', 'Gas Express');
-		    $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Item Update!');
+		    $message->to($email, 'Gas Express')->subject('Item Update!');
 
     
         });
+        }
+
         return Redirect::to('items')->with('notice', 'Admin approval is needed for this update');
         }else{
 
@@ -176,10 +190,11 @@ class ItemsController extends \BaseController {
 	}
 	}
 
-	public function approveitem($name,$size,$description,$pprice,$sprice,$sku,$tagid,$reorderlevel,$receiver,$id)
+	public function approveitem($name,$size,$description,$pprice,$sprice,$sku,$tagid,$reorderlevel,$receiver,$confirmer,$key,$id)
 	{
-		$item = Item::findOrFail($id);
 
+		$item = Item::findOrFail($id);
+        if($item->confirmation_code != $key){
 		$item->item_make = $name;
 		$item->item_size = $size;
 		$item->description = $description;
@@ -188,11 +203,15 @@ class ItemsController extends \BaseController {
 		$item->sku= $sku;
 		$item->tag_id = $tagid;
 		$item->reorder_level = $reorderlevel;
-        $item->confirmed_id = 2;
-        $item->receiver_id = Confide::user()->id;
+        $item->confirmed_id = $confirmer;
+        $item->receiver_id = $receiver;
+        $item->confirmation_code = $key;
 		$item->update();
 
 		return "<strong><span style='color:green'>Item update for ".$name." successfully approved!</span></strong>";
+	}else{
+         return "<strong><span style='color:red'>Item has already been approved!</span></strong>";
+	}
 	
 	}
 
