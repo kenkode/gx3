@@ -16,6 +16,9 @@ onkeypress="reset_interval()"
 onscroll="reset_interval()">
 
 
+<?php
+$notifications = Notification::where("user_id",Confide::user()->id)->where("is_read",0)->count();
+?>
     
 
     <div id="wrapper">
@@ -63,6 +66,14 @@ onscroll="reset_interval()">
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
+
+                <li>
+                    <a  href="{{ URL::to('notifications/index')}}">
+                        Notifications ({{$notifications}})
+                    </a>
+                    
+                </li>
+
                 <!-- /.dropdown -->
 
 

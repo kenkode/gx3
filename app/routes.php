@@ -98,7 +98,9 @@ Route::post('users/password/{user}', 'UsersController@changePassword');
 Route::get('users/profile/{user}', 'UsersController@profile');
 Route::get('users/show/{user}', 'UsersController@show');
 
-
+Route::get('notifications/index', 'NotificationController@index');
+Route::get('notifications/markasread/{id}', 'NotificationController@markasread');
+Route::get('notifications/markallasread', 'NotificationController@markallasread');
 
 Route::post('users/pass', 'UsersController@changePassword2');
 
@@ -202,7 +204,7 @@ Route::get('prices/edit/{id}', 'PricesController@edit');
 Route::post('prices/update/{id}', 'PricesController@update');
 Route::get('prices/delete/{id}', 'PricesController@destroy');
 Route::get('prices/show/{id}', 'PricesController@show');
-Route::get('approvepriceupdate/{client}/{item}/{discount}/{receiver}/{id}', 'PricesController@approveprice');
+Route::get('approvepriceupdate/{client}/{item}/{discount}/{receiver}/{confirmer}/{key}/{id}', 'PricesController@approveprice');
 
 Route::resource('items', 'ItemsController');
 Route::get('items/edit/{id}', 'ItemsController@edit');
@@ -314,7 +316,6 @@ Route::post('bankReconciliartion/generateReport', 'ErpReportsController@showRecR
 * accounts routes
 */
 
-Route::group(['before' => 'process_payroll'], function() {
 
 Route::resource('accounts', 'AccountsController');
 Route::post('accounts/update/{id}', 'AccountsController@update');
@@ -323,7 +324,6 @@ Route::get('accounts/edit/{id}', 'AccountsController@edit');
 Route::get('accounts/show/{id}', 'AccountsController@show');
 Route::get('accounts/create/{id}', 'AccountsController@create');
 
-});
 
 /*
 * journals routes
@@ -2676,13 +2676,22 @@ Route::get('stock/tracking', function(){
 }
 });
 
-Route::get('confirmstock/{id}/{name}', function($id,$name){
+Route::get('confirmstock/{id}/{name}/{confirmer}/{key}', function($id,$name,$confirmer,$key){
   $stock = Stock::find($id);
+  if($stock->confirmation_code != $key){
   $stock->is_confirmed = 1;
-  $stock->confirmed_id = 2;
+  $stock->confirmed_id = $confirmer;
+  $stock->confirmation_code = $key;
   $stock->update();
 
+  $notification = Notification::where('confirmation_code',$key)->where('user_id',$confirmer)->first();
+  $notification->is_read = 1;
+  $notification->update();
+
   return "<strong><span style='color:green'>Stock for item ".$name." confirmed as received!</span></strong>";
+}else{
+  return "<strong><span style='color:red'>Stock for item ".$name." already received!</span></strong>";
+}
 });
 
 
@@ -3090,8 +3099,19 @@ Route::get('erppurchases/show/{id}', function($id){
         {
         return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
         }else{
+
   return View::make('erppurchases.show', compact('order'));
 }
+  
+});
+
+Route::get('erppurchases/notifyshow/{key}/{user}/{id}', function($key,$user,$id){
+
+    $notification = Notification::where('confirmation_code',$key)->where('user_id',$user)->first();
+    $notification->is_read = 1;
+    $notification->update();
+
+    return Redirect::to('erppurchases/show/'.$id);
   
 });
 

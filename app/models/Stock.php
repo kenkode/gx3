@@ -83,13 +83,29 @@ class Stock extends \Eloquent {
         $id = $stock->id;
 		$username = Confide::user()->username;
 
-		$send_mail = Mail::send('emails.stock', array('name' => 'Victor Kotonya', 'username' => $username,'itemname' => $name,'location' => $loc,'quantity' => $quantity,'id' => $id), function($message)
+		$users = DB::table('roles')
+		->join('assigned_roles', 'roles.id', '=', 'assigned_roles.role_id')
+		->join('users', 'assigned_roles.user_id', '=', 'users.id')
+		->join('permission_role', 'roles.id', '=', 'permission_role.role_id') 
+		->select("users.id","email","username")
+		->where("permission_id",30)->get();
+
+		$key = md5(uniqid());
+
+		foreach ($users as $user) {
+
+		Notification::notifyUser($user->id,"Hello, Approval to receive stock is required","stock","confirmstock/".$id."/".$name."/".$user->id."/".$key, $key);
+
+		$email = $user->email;
+
+		$send_mail = Mail::send('emails.stock', array('name' => $user->username, 'username' => $username,'itemname' => $name,'location' => $loc,'quantity' => $quantity,'confirmer' => $user->id,'key'=>$key,'id' => $id), function($message) use($email)
         {   
 		    $message->from('info@lixnet.net', 'Gas Express');
-		    $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Stock Confirmation!');
+		    $message->to($email, 'Gas Express')->subject('Stock Confirmation!');
 
     
         });
+      	}
         }else{
         $stock = new Stock;
 

@@ -154,11 +154,14 @@ class ItemsController extends \BaseController {
 		->join('assigned_roles', 'roles.id', '=', 'assigned_roles.role_id')
 		->join('users', 'assigned_roles.user_id', '=', 'users.id')
 		->join('permission_role', 'roles.id', '=', 'permission_role.role_id') 
-		->where("permission_id",34)->get();
+		->select("users.id","email","username")
+		->where("permission_id",103)->get();
 
 		$key = md5(uniqid());
 
 		foreach ($users as $user) {
+
+		Notification::notifyUser($user->id,"Hello, Approval to update Item ".$name." is required","item","approveitemupdate/".$name."/".$size."/".$description."/".$purchase_price."/".$selling_price."/".$sku."/".$tag_id."/".$reorder_level."/".$receiver_id."/".$user->id."/".$key."/".$id,$key);
 
 		$email = $user->email;
 			
@@ -207,6 +210,10 @@ class ItemsController extends \BaseController {
         $item->receiver_id = $receiver;
         $item->confirmation_code = $key;
 		$item->update();
+
+		$notification = Notification::where('confirmation_code',$key)->where('user_id',$confirmer)->first();
+		$notification->is_read = 1;
+		$notification->update();
 
 		return "<strong><span style='color:green'>Item update for ".$name." successfully approved!</span></strong>";
 	}else{
