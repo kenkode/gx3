@@ -113,11 +113,15 @@
 
 <div class="row">
 	<div class="col-lg-12 text-right">
+		@if (Entrust::can('update_asset_management') )
 		<a href="{{ URL::to('assetManagement/'.$asset->id.'/edit') }}" class="btn btn-warning btn-sm">Edit Details</a>&emsp;
+		@endif
+		@if (Entrust::can('depreciation') )
 		@if($asset->book_value == $asset->purchase_price)
 		<a href="{{ URL::to('assetManagement/'.$asset->id.'/depreciate') }}" class="btn btn-success btn-sm">Run Depreciation</a>
 		@else
 		<a href="{{ URL::to('assetManagement/'.$asset->id.'/depreciate') }}" class="btn btn-success btn-sm">Re-run Depreciation</a>
+		@endif
 		@endif
 	</div>
 </div><hr>

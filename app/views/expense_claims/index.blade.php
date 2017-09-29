@@ -190,7 +190,11 @@ $(document).ready(function(){
 							<td>{{ ClaimReceipt::getReceipt($paymentClaim->id)->receipts }}</td>
 							<td>{{ asMoney(ClaimReceiptItem::getTotals(ClaimReceipt::getId($paymentClaim->id))->grand) }}</td>
 							<td>
+								@if( Entrust::can('pay_expense_claim') )
 								<a href="{{ URL::to('expense_claims/payClaim/'.$paymentClaim->id) }}" class="btn btn-info btn-sm">Pay Claim</a>
+								@else
+								
+								@endif
 							</td>
 						</tr>
 						<?php $count++ ?>

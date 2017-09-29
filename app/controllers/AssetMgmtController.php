@@ -10,8 +10,13 @@ class AssetMgmtController extends \BaseController {
 	public function index()
 	{
 		// INDEX PAGE
+		if (! Entrust::can('view_asset_management') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$assets = Asset::all();
 		return View::make('assets.index', compact('assets'));
+	}
 	}
 
 
@@ -23,8 +28,13 @@ class AssetMgmtController extends \BaseController {
 	public function create()
 	{
 		// NEW ASSET PAGE
+		if (! Entrust::can('create_asset_management') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$assetNum = 'AST_000'.(Asset::all()->count()+1);
 		return View::make('assets.create', compact('assetNum'));
+	}
 	}
 
 
@@ -70,8 +80,13 @@ class AssetMgmtController extends \BaseController {
 	public function show($id)
 	{
 		// DISPLAY ASSET INFORMATION
+		if (! Entrust::can('view_asset_management') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$asset = Asset::find($id);
 		return View::make('assets.show', compact('asset'));
+	}
 	}
 
 
@@ -84,8 +99,13 @@ class AssetMgmtController extends \BaseController {
 	public function edit($id)
 	{
 		// DISPLAY EDIT PAGE
+		if (! Entrust::can('update_asset_management') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$asset = Asset::find($id);
 		return View::make('assets.edit', compact('asset'));
+	}
 	}
 
 

@@ -9,9 +9,14 @@ class ExpensesController extends \BaseController {
 	 */
 	public function index()
 	{
+		if (! Entrust::can('view_expense') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$expenses = Expense::all();
 
 		return View::make('expenses.index', compact('expenses'));
+	    }
 	}
 
 	/**
@@ -21,8 +26,13 @@ class ExpensesController extends \BaseController {
 	 */
 	public function create()
 	{
+		if (! Entrust::can('create_expense') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$accounts = Account::all();
 		return View::make('expenses.create',compact('accounts'));
+	}
 	}
 
 	/**
@@ -64,9 +74,14 @@ class ExpensesController extends \BaseController {
 	 */
 	public function show($id)
 	{
+		if (! Entrust::can('view_expense') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$expense = Expense::findOrFail($id);
 
 		return View::make('expenses.show', compact('expense'));
+	}
 	}
 
 	/**
@@ -77,10 +92,16 @@ class ExpensesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
+
+		if (! Entrust::can('update_expense') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$expense = Expense::find($id);
 		$accounts = Account::all();
 
 		return View::make('expenses.edit', compact('expense','accounts'));
+	}
 	}
 
 	/**
@@ -119,9 +140,14 @@ class ExpensesController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+		if (! Entrust::can('delete_expense') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		Expense::destroy($id);
 
-		return Redirect::route('expenses.index')->withDeleteMessage('Expense successfully deleted!');;
+		return Redirect::route('expenses.index')->withDeleteMessage('Expense successfully deleted!');
+	}
 	}
 
 }

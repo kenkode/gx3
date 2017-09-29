@@ -17,8 +17,12 @@
 
 <div class="row">
 	<div class="col-lg-12">
+		@if( Entrust::can('approve_expense_claim') )
 		<a href="{{ URL::to('expense_claims/approve/'.$id) }}" class="btn btn-success btn-sm"><i class="fa fa-check fa-fw"></i> Approve Claim</a>&emsp;
+		@endif
+		@if( Entrust::can('decline_expense_claim') )
 		<a href="{{ URL::to('expense_claims/decline/'.$id) }}" class="btn btn-danger btn-sm"><i class="fa fa-times fa-fw"></i> Decline Claim</a>
+		@endif
 		<hr>
 
 		<table class="table table-condensed table-bordered table-responsive table-hover">

@@ -9,6 +9,10 @@ class ExpenseClaimController extends \BaseController {
 	 */
 	public function index()
 	{
+		if (! Entrust::can('view_expense_claim') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		Session::forget('receiptItems');
 		Session::forget('receiptDetails');
 
@@ -20,6 +24,7 @@ class ExpenseClaimController extends \BaseController {
 		$receipts = ClaimReceipt::where('status', 'New')->get();
 
 		return View::make('expense_claims.index', compact('receipts', 'waitingClaims', 'paymentClaims', 'settledClaims', 'declinedClaims'));
+	}
 	}
 
 
@@ -54,10 +59,15 @@ class ExpenseClaimController extends \BaseController {
 	public function show($id)
 	{
 
+        if (! Entrust::can('view_expense_claim') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$receiptItems = Session::get('receiptItems');
 		$receiptDetails = Session::get('receiptDetails');
 
 		return View::make('expense_claims.newReceipt', compact('receiptDetails', 'receiptItems'));
+	}
 	}
 
 
@@ -69,10 +79,15 @@ class ExpenseClaimController extends \BaseController {
 	 */
 	public function edit($id)
 	{
+		if (! Entrust::can('update_expense_claim') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$receipts = ClaimReceipt::where('id', $id)->get();
 		$items = ClaimReceiptItem::where('claimReceiptID', $id)->get();
 
 		return View::make('expense_claims.editReceipt', compact('items', 'receipts'));
+	}
 	}
 
 
@@ -104,7 +119,12 @@ class ExpenseClaimController extends \BaseController {
 	 * Show NEW RECEIPT PAGE
 	 */
 	public function newReceipt(){
+		if (! Entrust::can('create_new_receipt') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('expense_claims.newReceipt');
+	}
 	}
 
 
@@ -112,6 +132,10 @@ class ExpenseClaimController extends \BaseController {
 	 * NEW RECEIPT FUNCTIONALITY
 	 */
 	public function addReceiptItem(){
+		if (! Entrust::can('create_new_receipt') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$data = Input::all();
 
 		Session::put('receiptDetails', array(
@@ -127,6 +151,7 @@ class ExpenseClaimController extends \BaseController {
 		));
 
 		return Redirect::action('ExpenseClaimController@show');
+	}
 	}
 
 

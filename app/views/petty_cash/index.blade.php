@@ -260,9 +260,15 @@
 			<div class="head text-left">
 				<div class="right">
 					<div class="pull-right">
+						@if (Entrust::can('transfer_money') )
 						<a href="#receiveMoney" class="btn btn-success btn-sm" data-toggle="modal">Transfer From</a></li>&emsp;
+						@endif
+						@if (Entrust::can('receive_money') )
 						<a href="#receiveContribution" class="btn btn-info btn-sm" data-toggle="modal">Receive Money</a></li>&emsp;
+						@endif
+						@if (Entrust::can('create_new_transaction') )
 						<a href="#newTransaction" class="btn btn-warning btn-sm" data-toggle="modal"><i class="fa fa-plus fa-fw"></i>New Transaction</a></li>
+						@endif
 	            </div>
 				</div>
 			</div>

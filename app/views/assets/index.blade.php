@@ -75,8 +75,8 @@
 									<ul class="dropdown-menu" role="menu"> 
 										<li><a href="{{ URL::to('assetManagement/'.$asset->id) }}">View</a></li>
 										<li><a href="{{ URL::to('assetManagement/'.$asset->id.'/edit') }}">Edit</a></li>
-										<li><a href="{{ URL::to('assetManagement/dispose/'.$asset->id) }}">Dispose</a></li>
-										<li><a href="{{ URL::to('assetManagement/delete/'.$asset->id) }}" onclick="return (confirm('Are you sure you want to delete this item?'))">Delete</a></li>
+										<!-- <li><a href="{{ URL::to('assetManagement/dispose/'.$asset->id) }}">Dispose</a></li> -->
+										<!-- <li><a href="{{ URL::to('assetManagement/delete/'.$asset->id) }}" onclick="return (confirm('Are you sure you want to delete this item?'))">Delete</a></li> -->
 									</ul>
 								</div>
 							</td>
@@ -129,8 +129,8 @@
 									<ul class="dropdown-menu" role="menu"> 
 										<li><a href="{{ URL::to('assetManagement/'.$asset->id) }}">View</a></li>
 										<li><a href="{{ URL::to('assetManagement/'.$asset->id.'/edit') }}">Edit</a></li>
-										<li><a href="{{ URL::to('assetManagement/dispose/'.$asset->id) }}">Dispose</a></li>
-										<li><a href="{{ URL::to('assetManagement/delete/'.$asset->id) }}" onclick="return (confirm('Are you sure you want to delete this item?'))">Delete</a></li>
+										<!-- <li><a href="{{ URL::to('assetManagement/dispose/'.$asset->id) }}">Dispose</a></li>
+										<li><a href="{{ URL::to('assetManagement/delete/'.$asset->id) }}" onclick="return (confirm('Are you sure you want to delete this item?'))">Delete</a></li> -->
 									</ul>
 								</div>
 							</td>

@@ -8,6 +8,11 @@ class PettyCashController extends BaseController{
 	 * @return Response
 	 */
 	public function index(){
+
+		if (! Entrust::can('view_petty_cash') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		Session::forget('newTransaction');
 		Session::forget('trItems');
 
@@ -31,6 +36,7 @@ class PettyCashController extends BaseController{
 
 		return View::make('petty_cash.index', compact('accounts', 'assets', 'liabilities', 'petty', 'petty_account', 'ac_transactions'));
 	}
+}
 
 	/**
 	 * Show the form for creating a new expense
@@ -101,9 +107,11 @@ class PettyCashController extends BaseController{
 	 * SHOW RECEIPT TRANSACTIONS
 	 */
 	public function receiptTransactions($id){
+		
 		$items = PettycashItem::where('ac_trns', $id)->get();
 
 		return View::make('petty_cash.receiptTransactions', compact('items'));
+	
 	}
 
 
@@ -111,6 +119,7 @@ class PettyCashController extends BaseController{
 	 * ADD MONEY TO PETTY CASH ACCOUNT
 	 */
 	public function addMoney(){
+		
 		$ac_name = Account::where('id', Input::get('ac_from'))->first();
 		$amount = Input::get('amount');
 		if($ac_name->balance < Input::get('amount')){
@@ -136,12 +145,14 @@ class PettyCashController extends BaseController{
 		$journal->journal_entry($data);
 
 		return Redirect::action('PettyCashController@index')->with('success', "KES. $amount Successfully Transferred from $ac_name->name to Petty Cash!");
+	
 	}
 
 	/**
 	 * ADD MONEY TO PETTY CASH FROM OWNER'S CONTRIBUTION
 	 */
 	public function addContribution(){
+		
 		$ac_name = Account::where('id', Input::get('cont_acFrom'))->first();
 		$contAmount = Input::get('cont_amount');
 		$contName = Input::get('cont_name');
@@ -165,12 +176,14 @@ class PettyCashController extends BaseController{
 		$journal->journal_entry($data);
 
 		return Redirect::action('PettyCashController@index')->with('success', "KES. $contAmount Transferred to Petty Cash Account from $contName");
+	
 	}
 
 	/**
 	 * CREATE NEW PETTY CASH TRANSACTION
 	 */
 	public function newTransaction(){
+		
 		Session::put('newTransaction', [
 			'transactTo'=>Input::get('transact_to'),
 			'trDate'=>Input::get('tr_date'),
@@ -193,6 +206,7 @@ class PettyCashController extends BaseController{
 		$trItems = Session::get('trItems');
 
 		return View::make('petty_cash.transactionItems', compact('newTr', 'trItems'));
+	
 	}
 
 
@@ -204,6 +218,8 @@ class PettyCashController extends BaseController{
 			'transactTo'=>Input::get('transact_to'),
 			'trDate'=>Input::get('tr_date')
 		]);*/
+
+	
 		$newTr = Session::get('newTransaction');
 
 		$items = Session::get('trItems');
@@ -215,6 +231,7 @@ class PettyCashController extends BaseController{
 		$trItems = Session::get('trItems');
 
 		return View::make('petty_cash.transactionItems', compact('newTr', 'trItems'));
+	
 	}
 
 
@@ -270,6 +287,5 @@ class PettyCashController extends BaseController{
 
 		return Redirect::action('PettyCashController@index');
 	}
-
 
 }
