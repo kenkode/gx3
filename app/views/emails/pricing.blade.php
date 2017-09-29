@@ -12,7 +12,7 @@ Hello {{$name}},
 <br>
 <p>Click on the link below to approve price update</p>
 
-<p><a href="{{URL::to('approvepriceupdate/'.$client->id.'/'.$item->id.'/'.$discount.'/'.$receiver.'/'.$id)}}">Approve Item Update</a></p>
+<p><a href="{{URL::to('approvepriceupdate/'.$client->id.'/'.$item->id.'/'.$discount.'/'.$receiver.'/'.$confirmer.'/'.$key.'/'.$id)}}">Approve Item Update</a></p>
 <br><br>
 <p>Regards,</p>
 <p>Gas Express</p>

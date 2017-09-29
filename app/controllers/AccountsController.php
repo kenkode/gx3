@@ -9,12 +9,18 @@ class AccountsController extends \BaseController {
 	 */
 	public function index()
 	{
+
+		if ( Entrust::can('view_account') ) // Checks the current user
+        {
 		$accounts = DB::table('accounts')->orderBy('code', 'asc')->get();
 
 		return View::make('accounts.index', compact('accounts'));
 
 
 		Audit::logaudit('Accounts', 'view', 'view chart of accounts');
+	    }else{
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+	    }
 	}
 
 	/**
@@ -24,7 +30,12 @@ class AccountsController extends \BaseController {
 	 */
 	public function create()
 	{
+		if (! Entrust::can('create_account') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('accounts.create');
+	}
 	}
 
 	/**
@@ -83,9 +94,14 @@ class AccountsController extends \BaseController {
 	 */
 	public function show($id)
 	{
+		if (! Entrust::can('view_account') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$account = Account::findOrFail($id);
 
 		return View::make('accounts.show', compact('account'));
+	}
 	}
 
 	/**
@@ -99,8 +115,12 @@ class AccountsController extends \BaseController {
 		$account = Account::find($id);
 
 
-
+     if (! Entrust::can('update_account') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		return View::make('accounts.edit', compact('account'));
+			}
 	}
 
 	/**
@@ -179,6 +199,10 @@ class AccountsController extends \BaseController {
 	public function destroy($id)
 	{
 
+       if (! Entrust::can('delete_account') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
 		$account = Account::findOrFail($id);
 
 		Account::destroy($id);
@@ -188,6 +212,7 @@ class AccountsController extends \BaseController {
 
 
 		return Redirect::route('accounts.index');
+	}
 	}
 
 }

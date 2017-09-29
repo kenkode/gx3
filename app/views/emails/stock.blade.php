@@ -11,7 +11,7 @@ Hello {{$name}},
 <br>
 <p>Click on the link below to confirm stock</p>
 
-<p><a href="{{URL::to('confirmstock/'.$id.'/'.$itemname)}}">Confirm stock</a></p>
+<p><a href="{{URL::to('confirmstock/'.$id.'/'.$itemname.'/'.$confirmer.'/'.$key)}}">Confirm stock</a></p>
 <br><br>
 <p>Regards,</p>
 <p>Gas Express</p>

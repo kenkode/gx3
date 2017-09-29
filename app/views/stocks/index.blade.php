@@ -34,9 +34,9 @@
       <div class="panel-heading">
           <a class="btn btn-info btn-sm" href="{{ URL::to('stocks/create')}}">Receive Stock </a> &emsp;
           <a class="btn btn-primary btn-sm" href="{{ URL::to('stock/tracking') }}">Track Stocks</a> &emsp;
-          @if(Entrust::can('confirm_stock'))
+          <!-- @if(Entrust::can('confirm_stock'))
           <a class="btn btn-warning btn-sm" href="{{ URL::to('stocks/confirmation')}}">Confirm Stock </a> 
-          @endif
+          @endif -->
         </div>
         <div class="panel-body">
 

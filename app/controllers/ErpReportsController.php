@@ -707,15 +707,32 @@ public function kenya($id){
 
         $organization = Organization::find(1);
 
-        $send_mail = Mail::send('emails.submitpurchase', array('name' => 'Victor Kotonya', 'username' => $username,'orders' => $orders,'txorders' => $txorders,'count' => $count,'erporder' => $erporder,'organization' => $organization,'id' => $id), function($message)
+        $users = DB::table('roles')
+        ->join('assigned_roles', 'roles.id', '=', 'assigned_roles.role_id')
+        ->join('users', 'assigned_roles.user_id', '=', 'users.id')
+        ->join('permission_role', 'roles.id', '=', 'permission_role.role_id') 
+        ->where("permission_id",32)
+        ->select("users.id","email","username")
+        ->get();
+
+        $key = md5(uniqid());
+
+        foreach ($users as $user) {
+
+        Notification::notifyUser($user->id,"Hello, Purchase order ".$erporder->order_number." needs to be reviewed!","review purchase order","erppurchases/notifyshow/".$key."/".$user->id."/".$id,$key);
+
+        $email = $user->email;
+
+        $send_mail = Mail::send('emails.submitpurchase', array('name' => $user->username, 'username' => $username,'orders' => $orders,'txorders' => $txorders,'count' => $count,'erporder' => $erporder,'organization' => $organization,'id' => $id), function($message) use($email)
         {   
             $message->from('info@lixnet.net', 'Gas Express');
-            $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Purchase Order Approval!');
+            $message->to($email, 'Gas Express')->subject('Purchase Order Approval!');
 
     
         });
+        }
     
-        return Redirect::to('erppurchases/show/'.$id)->with('notice', 'Succeffully submited approval');
+        return Redirect::to('erppurchases/show/'.$id)->with('notice', 'Succefully submited approval');
         
     }
 
@@ -792,15 +809,31 @@ public function kenya($id){
 
         $organization = Organization::find(1);
 
-        $send_mail = Mail::send('emails.reviewpurchase', array('name' => 'Victor Kotonya', 'username' => $username,'orders' => $orders,'txorders' => $txorders,'count' => $count,'erporder' => $erporder,'organization' => $organization,'id' => $id), function($message)
+        $users = DB::table('roles')
+        ->join('assigned_roles', 'roles.id', '=', 'assigned_roles.role_id')
+        ->join('users', 'assigned_roles.user_id', '=', 'users.id')
+        ->join('permission_role', 'roles.id', '=', 'permission_role.role_id') 
+        ->select("users.id","email","username")
+        ->where("permission_id",31)->get();
+
+        $key = md5(uniqid());
+
+        foreach ($users as $user) {
+
+        Notification::notifyUser($user->id,"Hello, Purchase order ".$erporder->order_number." needs to be authorized!","authorize purchase order","erppurchases/notifyshow/".$key."/".$user->id."/".$id,$key);
+
+        $email = $user->email;
+
+        $send_mail = Mail::send('emails.reviewpurchase', array('name' => $user->username, 'username' => $username,'orders' => $orders,'txorders' => $txorders,'count' => $count,'erporder' => $erporder,'organization' => $organization,'id' => $id), function($message) use($email)
         {   
             $message->from('info@lixnet.net', 'Gas Express');
-            $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Purchase Order Review!');
+            $message->to($email, 'Gas Express')->subject('Purchase Order Authorization!');
 
     
         });
+    }
     
-        return Redirect::to('erppurchases/show/'.$id)->with('notice', 'Succeffully reviewed purchase order');
+        return Redirect::to('erppurchases/show/'.$id)->with('notice', 'Succefully reviewed purchase order');
         
     }
 

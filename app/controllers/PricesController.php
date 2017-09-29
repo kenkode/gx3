@@ -116,7 +116,7 @@ class PricesController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-		if (! Entrust::can('update_pricing') ) // Checks the current user
+		if (! Entrust::can('confirm_update_pricing') ) // Checks the current user
         {
 
 		$client_id = Input::get('client');		
@@ -127,13 +127,29 @@ class PricesController extends \BaseController {
 		$item = Item::find($item_id);
 		$username = Confide::user()->username;
 
-		$send_mail = Mail::send('emails.pricing', array('name' => 'Victor Kotonya', 'username' => $username,'client' => $client,'item' => $item,'discount' => $discount,'receiver'=>Confide::user()->id,'id' => $id), function($message)
+		$users = DB::table('roles')
+		->join('assigned_roles', 'roles.id', '=', 'assigned_roles.role_id')
+		->join('users', 'assigned_roles.user_id', '=', 'users.id')
+		->join('permission_role', 'roles.id', '=', 'permission_role.role_id') 
+		->select("users.id","email","username")
+		->where("permission_id",104)->get();
+
+		$key = md5(uniqid());
+
+		foreach ($users as $user) {
+
+		Notification::notifyUser($user->id,"Approval to pricing for item".$item->item_make." is required","price","approvepriceupdate/".$client->id."/".$item->id."/".$discount."/".Confide::user()->id."/".$user->id."/".$key."/".$id,$key);
+
+		$email = $user->email;
+
+		$send_mail = Mail::send('emails.pricing', array('name' => $user->username, 'username' => $username,'client' => $client,'item' => $item,'discount' => $discount,'receiver'=>Confide::user()->id,'confirmer' => $user->id,'key'=>$key,'id' => $id), function($message) use($email)
         {   
 		    $message->from('info@lixnet.net', 'Gas Express');
-		    $message->to('victor.kotonya@lixnet.net', 'Gas Express')->subject('Pricing Update!');
+		    $message->to($email, 'Gas Express')->subject('Pricing Update!');
 
     
         });
+	    }
         return Redirect::to('prices')->with('notice', 'Admin approval is needed for this update');
         }else{
 
@@ -149,21 +165,29 @@ class PricesController extends \BaseController {
 	}
 	}
 
-    public function approveprice($client,$item,$discount,$receiver,$id)
+    public function approveprice($client,$item,$discount,$receiver,$confirmer,$key,$id)
 	{
 		$price = Price::findOrFail($id);
-
+        if($price->confirmation_code != $key){
 		$price->date = date('Y-m-d');
 		$price->client_id = $client;		
 		$price->item_id = $item;
 		$price->Discount = $discount;		
-        $price->confirmed_id = 2;
+        $price->confirmed_id = $confirmer;
         $price->receiver_id = $receiver;
+        $price->confirmation_code = $key;
 		$price->update();
 
 		$i = Item::find($item);
 
+		$notification = Notification::where('confirmation_code',$key)->where('user_id',$confirmer)->first();
+		$notification->is_read = 1;
+		$notification->update();
+
 		return "<strong><span style='color:green'>Price update for ".$i->item_make." successfully approved!</span></strong>";
+	}else{
+		return "<strong><span style='color:red'>Item Price has already approved!</span></strong>";
+	}
 	
 	}
 

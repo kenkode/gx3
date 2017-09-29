@@ -1,17 +1,10 @@
-<?php
 
-
-function asMoney($value) {
-  return number_format($value, 2);
-}
-
-?>
 
 <p>
 Hello {{$name}}, 
 </p>
 
-<p>Please authorize or review the following purchase order prepared by {{$username}}: </p>
+<p>Please review the following purchase order prepared by {{$username}}: </p>
 <table class="inv" style="width:100%">
           
            
@@ -42,9 +35,9 @@ Hello {{$name}},
             <td>{{ $orderitem->item->description}}</td>
             
             <td>{{ $orderitem->quantity}}</td>
-            <td>{{ asMoney($orderitem->price)}}</td>
+            <td>{{ number_format($orderitem->price,2)}}</td>
             
-             <td> {{asMoney($orderitem->price * $orderitem->quantity)}}</td>
+             <td> {{number_format(($orderitem->price * $orderitem->quantity),2)}}</td>
           </tr>
 
 
@@ -62,7 +55,7 @@ Hello {{$name}},
           <tr>
             <td style="border-top:1px solid #C0C0C0" rowspan="4" colspan="3">&nbsp;</td>
             
-            <td style="border-top:1px solid #C0C0C0" ><strong>Subtotal</strong> </td><td style="border-top:1px solid #C0C0C0" colspan="1">KES {{asMoney($total)}}</td>
+            <td style="border-top:1px solid #C0C0C0" ><strong>Subtotal</strong> </td><td style="border-top:1px solid #C0C0C0" colspan="1">KES {{number_format($total,2)}}</td>
            
 <?php 
 $grandtotal = $grandtotal + $total;
@@ -73,11 +66,11 @@ $payments = Erporder::getTotalPayments($erporder);
            @foreach($txorders as $txorder)
            <?php $grandtotal = $total + $txorder->amount; ?>
            <tr>
-            <td style="border-top:1px solid #C0C0C0" ><strong>{{$txorder->name}}</strong> ({{$txorder->rate.' %'}})</td><td style="border-top:1px solid #C0C0C0" colspan="1">KES {{asMoney($txorder->amount)}}</td>
+            <td style="border-top:1px solid #C0C0C0" ><strong>{{$txorder->name}}</strong> ({{$txorder->rate.' %'}})</td><td style="border-top:1px solid #C0C0C0" colspan="1">KES {{number_format($txorder->amount,2)}}</td>
            </tr>
            @endforeach
             <tr>
-            <td style="border-top:1px solid #C0C0C0" ><strong>Total Amount</strong> </td><td style="border-top:1px solid #C0C0C0" colspan="1">KES {{asMoney($grandtotal)}}</td>
+            <td style="border-top:1px solid #C0C0C0" ><strong>Total Amount</strong> </td><td style="border-top:1px solid #C0C0C0" colspan="1">KES {{number_format($grandtotal,2)}}</td>
            </tr>
            
          
@@ -86,7 +79,7 @@ $payments = Erporder::getTotalPayments($erporder);
       
       </table>
 <br>
-<p>Please login to authorize or review purchase order</p>
+<p>Please login to review purchase order</p>
 <p><a href="{{URL::to('/')}}">Login</a></p>
 <br><br>
 <p>Regards,</p>

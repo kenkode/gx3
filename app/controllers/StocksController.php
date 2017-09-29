@@ -48,6 +48,24 @@ class StocksController extends \BaseController {
 	}
 	}
 
+	public function confirmstock()
+	{
+		$items = Item::all();
+		$locations = Location::all();
+		$clients = Client::all();
+		$erporders = DB::table('erporders')
+		                 ->join('clients','erporders.client_id','=','clients.id')
+		                 ->select( DB::raw('erporders.client_id, erporders.order_number'))
+		                 ->get();
+
+        if (! Entrust::can('receive_stock') ) // Checks the current user
+        {
+        return Redirect::to('dashboard')->with('notice', 'you do not have access to this resource. Contact your system admin');
+        }else{
+		return View::make('stocks.create', compact('items', 'locations','clients','erporders'));
+	}
+	}
+
 	/**
 	 * Store a newly created stock in storage.
 	 *
@@ -77,6 +95,7 @@ class StocksController extends \BaseController {
 		if (! Entrust::can('confirm_stock') ) // Checks the current user
         {
         return Redirect::to('stocks')->with('notice', 'Stock has been successfully updated! Please wait for admin confirmation....');
+
         }else{
 
 		return Redirect::route('stocks.index')->withFlashMessage('stock has been successfully updated!');
